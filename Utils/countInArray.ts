@@ -2,7 +2,8 @@
  * Список карточек
  *
  * @param {count} first - количество элементов генерируемого списка
- * @param {props} second - props children
+ * * @param {offset} second - хз пока что
+ * @param {childrens} three - props children
  * @returns {[id: string, content: ChildNode]}
  */
 export type DragnItem = {
@@ -10,15 +11,12 @@ export type DragnItem = {
   content: React.ReactNode;
 };
 export type DragnItemsList = DragnItem[];
-
-export const countInArray = (
+export const generateItems = (
   count: number = 1,
-  childrens: React.ReactNode[]
+  offset: number = 0,
+  childrens?: React.ReactNode[]
 ): DragnItemsList =>
-  Array.from({ length: count }, (v, k) => k).map((k) => {
-    const custom = {
-      id: `id-${k}`,
-      content: childrens[k],
-    };
-    return custom;
-  });
+  Array.from({ length: count }, (v, k) => k).map((k) => ({
+    id: `item-${k + offset}-${new Date().getTime()}`,
+    content: childrens[k],
+  }));

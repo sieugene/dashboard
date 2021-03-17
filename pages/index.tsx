@@ -1,7 +1,6 @@
-import { Col, Row } from "antd";
+import { Row } from "antd";
 import Head from "next/head";
-import DragndropWrapper from "../Components/DragndropWrapper";
-import { DragndropMultiple } from "../Components/DragndropWrapper/DragndropMultiple";
+import { DragndropMultiple } from "../Components/DragndropWrapper";
 
 export default function Home() {
   return (
@@ -12,23 +11,20 @@ export default function Home() {
       </Head>
 
       <Row justify="center">
-        <Col>
-          <DragndropWrapper>
+        {process.browser && (
+          <DragndropMultiple>
             <div>
-              <div>child in child</div>
+              ELEMENT
+              <div>ELEMENT CHILD</div>
             </div>
-            <div>some</div>
-          </DragndropWrapper>
-        </Col>
-        <Col offset={2}>
-          <DragndropWrapper>
             <div>
-              <div>child in child</div>
+              ELEMENT 2<div>ELEMENT 2CHILD</div>
             </div>
-            <div>some</div>
-          </DragndropWrapper>
-        </Col>
-        {process.browser && <DragndropMultiple />}
+            <div>
+              ELEMENT 3<div>ELEMENT 3CHILD</div>
+            </div>
+          </DragndropMultiple>
+        )}
       </Row>
 
       <footer></footer>

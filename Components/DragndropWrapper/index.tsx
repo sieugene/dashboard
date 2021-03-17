@@ -1,53 +1,83 @@
 import React, { FC, useState } from "react";
-import { DragDropContext, Droppable } from "react-beautiful-dnd";
-import { countInArray, DragnItemsList } from "../../Utils/countInArray";
+import { DragDropContext } from "react-beautiful-dnd";
+import { generateItems } from "../../Utils/countInArray";
+import { moveItems } from "../../Utils/moveItems";
 import { reorder } from "../../Utils/reorder";
-import { Card } from "../Card";
-import { CardList } from "../Card/CardList";
-
+import { DroppableElement } from "../DroppableElement/DroppableElement";
 type Props = {
-  children: React.ReactNode[];
+  children: any[];
 };
 
-const DragndropWrapper: FC<Props> = ({ children }) => {
-  const count = children?.length;
+export const DragndropMultiple: FC<Props> = ({ children }) => {
+  const childIterator = () => {
+    let gridItetator = 0;
+    return children.reduce((items, child) => {
+      if (child?.props?.children) {
+        items.push(
+          generateItems(
+            child.props.children.length,
+            gridItetator,
+            child.props.children
+          )
+        );
+        gridItetator += 10;
+      }
+      return items;
+    }, []);
+  };
 
-  const [state, setState] = useState<{ cards: DragnItemsList }>({
-    cards: countInArray(count, children),
-  });
+  const [state, setState] = useState<any>(childIterator());
 
   function onDragEnd(result) {
-    const isDrag =
-      !result.destination || result.destination.index === result.source.index;
+    const { source, destination } = result;
 
-    if (isDrag) {
+    // dropped outside the list
+    if (!destination) {
       return;
     }
+    const sInd = +source.droppableId;
+    const dInd = +destination.droppableId;
 
-    const cards = reorder(
-      state.cards,
-      result.source.index,
-      result.destination.index
-    );
+    if (sInd === dInd) {
+      const items = reorder(state[sInd], source.index, destination.index);
+      const newState = [...state];
+      newState[sInd] = items;
+      setState(newState);
+    } else {
+      const result = moveItems(state[sInd], state[dInd], source, destination);
+      const newState = [...state];
+      newState[sInd] = result[sInd];
+      newState[dInd] = result[dInd];
 
-    setState({ cards });
+      setState(newState.filter((group) => group.length));
+    }
   }
 
   return (
-    <>
-      {process.browser && (
+    <div>
+      <button
+        type="button"
+        onClick={() => {
+          setState([...state, []]);
+        }}
+      >
+        Add new group
+      </button>
+      <button
+        type="button"
+        onClick={() => {
+          setState([...state, generateItems(1)]);
+        }}
+      >
+        Add new item
+      </button>
+      <div style={{ display: "flex" }}>
         <DragDropContext onDragEnd={onDragEnd}>
-          <Droppable droppableId="list">
-            {(provided) => (
-              <div ref={provided.innerRef} {...provided.droppableProps}>
-                <CardList cards={state.cards} />
-                {provided.placeholder}
-              </div>
-            )}
-          </Droppable>
+          {state.map((el, ind) => (
+            <DroppableElement ind={ind} el={el} />
+          ))}
         </DragDropContext>
-      )}
-    </>
+      </div>
+    </div>
   );
 };
-export default DragndropWrapper;
