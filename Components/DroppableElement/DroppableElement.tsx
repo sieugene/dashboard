@@ -2,13 +2,13 @@ import React, { FC } from "react";
 import { DraggableCard } from "../Card/DraggableCard";
 import { Droppable } from "react-beautiful-dnd";
 import { DragnItemsList } from "../../Utils/countInArray";
+import s from "./DroppableElement.module.scss";
 
 const grid = 8;
 
 const getListStyle = (isDraggingOver) => ({
-  background: isDraggingOver ? "lightblue" : "lightgrey",
+  background: isDraggingOver ? "#c8ebf6a3" : "#ffffffa3",
   padding: grid,
-  width: 250,
 });
 
 type Props = {
@@ -24,6 +24,7 @@ export const DroppableElement: FC<Props> = ({ ind, el, deleteItem }) => {
         <div
           ref={provided.innerRef}
           style={getListStyle(snapshot.isDraggingOver)}
+          className={s.drop__element}
           {...provided.droppableProps}
         >
           {el.map((item, index) => (

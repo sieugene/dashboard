@@ -5,6 +5,7 @@ import { generateItems, DragnItemsList } from "../../Utils/countInArray";
 import { moveItems } from "../../Utils/moveItems";
 import { reorder } from "../../Utils/reorder";
 import { DroppableElement } from "../DroppableElement/DroppableElement";
+import s from "./index.module.scss";
 type Props = {
   children: JSX.Element[];
 };
@@ -46,7 +47,7 @@ export const DragndropMultiple: FC<Props> = ({ children }) => {
 
   return (
     <div>
-      <button
+      {/* <button
         type="button"
         onClick={() => {
           setState([...state, []]);
@@ -61,8 +62,8 @@ export const DragndropMultiple: FC<Props> = ({ children }) => {
         }}
       >
         Add new item
-      </button>
-      <div style={{ display: "flex" }}>
+      </button> */}
+      <div className={s.drag__wrap}>
         <DragDropContext onDragEnd={onDragEnd}>
           {state.map((el, ind) => (
             <DroppableElement

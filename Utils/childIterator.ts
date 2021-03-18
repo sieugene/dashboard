@@ -3,12 +3,14 @@ import { DragnItemsList, generateItems } from "./countInArray";
 export const childIterator = (children: JSX.Element[]): DragnItemsList[] => {
   let gridItetator = 0;
   return children.reduce((items, child) => {
-    if (child?.props?.children) {
+    const isHaveChilds = child?.props?.children;
+    const notEmpty = Object.values(child).length >= 1;
+    if (notEmpty) {
       items.push(
         generateItems(
-          child.props.children.length,
+          isHaveChilds ? child.props.children.length : 1,
           gridItetator,
-          child.props.children
+          isHaveChilds ? child.props.children : child
         )
       );
       gridItetator += 10;

@@ -18,5 +18,5 @@ export const generateItems = (
 ): DragnItemsList =>
   Array.from({ length: count }, (v, k) => k).map((k) => ({
     id: `item-${k + offset}-${new Date().getTime()}`,
-    content: (childrens && childrens[k]) ?? "",
+    content: (childrens && childrens[k]) ?? (childrens || ""),
   }));

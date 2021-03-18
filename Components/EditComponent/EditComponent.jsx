@@ -14,13 +14,13 @@ export const EditComponent = () => {
   );
 
   return (
-    <>
+    <div className="editor">
       <Editor
         editorState={editorState}
         wrapperClassName="demo-wrapper"
         editorClassName="demo-editor"
         onEditorStateChange={setEditorState}
       />
-    </>
+    </div>
   );
 };

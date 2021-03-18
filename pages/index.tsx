@@ -2,6 +2,7 @@ import { Row } from "antd";
 import Head from "next/head";
 import { DragndropMultiple } from "../Components/DragndropWrapper";
 import { EditComponent } from "../Components/EditComponent/EditComponent";
+import { EditImageUpload } from "../Components/EditComponent/EditImageUpload";
 
 export default function Home() {
   return (
@@ -10,17 +11,13 @@ export default function Home() {
         <title>Create Next App</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <EditComponent />
+
       <Row justify="center">
         {process.browser && (
           <DragndropMultiple>
-            <div>ELEMENT</div>
-            <div>
-              ELEMENT 2<div>ELEMENT 2CHILD</div>
-            </div>
-            <div>
-              ELEMENT 3<div>ELEMENT 3CHILD</div>
-            </div>
+            <EditComponent></EditComponent>
+            <EditComponent></EditComponent>
+            <EditImageUpload />
           </DragndropMultiple>
         )}
       </Row>
