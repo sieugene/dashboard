@@ -22,7 +22,7 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx"
-, "Components/DragndropWrapper/TwoDragn.jsx"  ],
+, "Components/DragndropWrapper/TwoDragn.jsx", "Components/EditComponent/EditComponent.jsx"  ],
   "exclude": [
     "node_modules"
   ]
