@@ -1,5 +1,6 @@
-import React from "react";
+import React, { FC } from "react";
 import { Draggable } from "react-beautiful-dnd";
+import { DragnItem } from "../../Utils/countInArray";
 
 const grid = 8;
 
@@ -16,9 +17,16 @@ const getItemStyle = (isDragging, draggableStyle) => ({
   ...draggableStyle,
 });
 
-export const DraggableCard = ({ item, index }) => {
+type Props = {
+  deleteItem: (ind: number, index: number) => void;
+  index: number;
+  ind: number;
+  item: DragnItem;
+};
+
+export const DraggableCard: FC<Props> = ({ item, index, deleteItem, ind }) => {
   return (
-    <Draggable key={item.id} draggableId={item.id} index={index}>
+    <Draggable draggableId={item.id} index={index}>
       {(provided, snapshot) => (
         <div
           ref={provided.innerRef}
@@ -36,16 +44,14 @@ export const DraggableCard = ({ item, index }) => {
             }}
           >
             {item.content}
-            {/* <button
+            <button
               type="button"
               onClick={() => {
-                const newState = [...state];
-                newState[ind].splice(index, 1);
-                setState(newState.filter((group) => group.length));
+                deleteItem(ind, index);
               }}
             >
               delete
-            </button> */}
+            </button>
           </div>
         </div>
       )}

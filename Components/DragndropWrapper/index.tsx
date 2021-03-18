@@ -1,44 +1,29 @@
 import React, { FC, useState } from "react";
 import { DragDropContext } from "react-beautiful-dnd";
-import { generateItems } from "../../Utils/countInArray";
+import { childIterator } from "../../Utils/childIterator";
+import { generateItems, DragnItemsList } from "../../Utils/countInArray";
 import { moveItems } from "../../Utils/moveItems";
 import { reorder } from "../../Utils/reorder";
 import { DroppableElement } from "../DroppableElement/DroppableElement";
 type Props = {
-  children: any[];
+  children: JSX.Element[];
 };
 
 export const DragndropMultiple: FC<Props> = ({ children }) => {
-  const childIterator = () => {
-    let gridItetator = 0;
-    return children.reduce((items, child) => {
-      if (child?.props?.children) {
-        items.push(
-          generateItems(
-            child.props.children.length,
-            gridItetator,
-            child.props.children
-          )
-        );
-        gridItetator += 10;
-      }
-      return items;
-    }, []);
-  };
-
-  const [state, setState] = useState<any>(childIterator());
+  const [state, setState] = useState<DragnItemsList[]>(childIterator(children));
 
   function onDragEnd(result) {
     const { source, destination } = result;
 
-    // dropped outside the list
     if (!destination) {
       return;
     }
     const sInd = +source.droppableId;
     const dInd = +destination.droppableId;
 
-    if (sInd === dInd) {
+    const isNotChangeCol = sInd === dInd;
+
+    if (isNotChangeCol) {
       const items = reorder(state[sInd], source.index, destination.index);
       const newState = [...state];
       newState[sInd] = items;
@@ -52,6 +37,12 @@ export const DragndropMultiple: FC<Props> = ({ children }) => {
       setState(newState.filter((group) => group.length));
     }
   }
+
+  const deleteItem = (ind: number, index: number) => {
+    const newState = [...state];
+    newState[ind].splice(index, 1);
+    setState(newState.filter((group) => group.length));
+  };
 
   return (
     <div>
@@ -74,7 +65,12 @@ export const DragndropMultiple: FC<Props> = ({ children }) => {
       <div style={{ display: "flex" }}>
         <DragDropContext onDragEnd={onDragEnd}>
           {state.map((el, ind) => (
-            <DroppableElement ind={ind} el={el} />
+            <DroppableElement
+              ind={ind}
+              el={el}
+              key={ind}
+              deleteItem={deleteItem}
+            />
           ))}
         </DragDropContext>
       </div>

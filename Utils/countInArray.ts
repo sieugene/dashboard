@@ -2,7 +2,7 @@
  * Список карточек
  *
  * @param {count} first - количество элементов генерируемого списка
- * * @param {offset} second - хз пока что
+ * * @param {offset} second - отступ
  * @param {childrens} three - props children
  * @returns {[id: string, content: ChildNode]}
  */
@@ -18,5 +18,5 @@ export const generateItems = (
 ): DragnItemsList =>
   Array.from({ length: count }, (v, k) => k).map((k) => ({
     id: `item-${k + offset}-${new Date().getTime()}`,
-    content: childrens[k],
+    content: (childrens && childrens[k]) ?? "",
   }));
