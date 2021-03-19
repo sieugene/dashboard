@@ -1,7 +1,7 @@
 import React, { FC, useState } from "react";
 import { DragDropContext } from "react-beautiful-dnd";
 import { childIterator } from "../../Utils/childIterator";
-import { generateItems, DragnItemsList } from "../../Utils/countInArray";
+import { DragnItemsList } from "../../Utils/countInArray";
 import { moveItems } from "../../Utils/moveItems";
 import { reorder } from "../../Utils/reorder";
 import { DroppableElement } from "../DroppableElement/DroppableElement";

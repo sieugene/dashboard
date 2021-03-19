@@ -14,9 +14,9 @@ export default function Home() {
       <Row justify="center">
         {process.browser && (
           <DragndropMultiple>
-            <EditImageUpload />
-            <EditImageUpload />
-            <EditImageUpload />
+            <EditImageUpload id={"test"} />
+            <EditImageUpload id={"test2"} />
+            <EditImageUpload id={"test3"} />
             <div>
               <div>Element</div>
             </div>

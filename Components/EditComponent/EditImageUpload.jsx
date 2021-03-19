@@ -6,15 +6,13 @@ const Editor = dynamic(
   () => import("react-draft-wysiwyg").then((mod) => mod.Editor),
   { ssr: false }
 );
-import { EditorState } from "draft-js";
 
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import "draft-js/dist/Draft.css";
+import { useEditor } from "./useEditor";
 
-export const EditImageUpload = () => {
-  const [editorState, setEditorState] = React.useState(() =>
-    EditorState.createEmpty()
-  );
+export const EditImageUpload = ({ id }) => {
+  const { editorState, setEditorState } = useEditor(id);
 
   function uploadImageCallBack(file) {
     return new Promise((resolve, reject) => {
@@ -30,7 +28,9 @@ export const EditImageUpload = () => {
       <h3>Image option supports image upload also.</h3>
       <Editor
         editorState={editorState}
-        onEditorStateChange={setEditorState}
+        onEditorStateChange={(mutable) => {
+          setEditorState(mutable);
+        }}
         toolbarClassName="rdw-storybook-toolbar"
         wrapperClassName="rdw-storybook-wrapper"
         editorClassName="rdw-storybook-editor"
