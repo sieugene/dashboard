@@ -15,14 +15,9 @@ export default function Home() {
         {process.browser && (
           <DragndropMultiple>
             <EditImageUpload id={"test"} />
-            <EditImageUpload id={"test2"} />
-            <EditImageUpload id={"test3"} />
-            <div>
-              <div>Element</div>
-            </div>
-            <div>
-              <div>Element2</div>
-            </div>
+            <div>test</div>
+            {/* <EditImageUpload id={"test2"} />
+            <EditImageUpload id={"test3"} /> */}
           </DragndropMultiple>
         )}
       </Row>
