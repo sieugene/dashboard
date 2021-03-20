@@ -4,35 +4,7 @@ import { HYDRATE } from "next-redux-wrapper";
 // Constants
 
 const initialState = {
-  editors: {
-    test: EditorState.createEmpty(),
-  },
-};
-
-const saveContentToStore = (content) => {
-  const JSContent = {
-    ...content,
-    content: JSON.stringify(convertToRaw(content.getCurrentContent())),
-  };
-  localStorage.setItem("testData", JSON.stringify(JSContent));
-  return JSContent;
-};
-
-export const readContentFromStore = (content) => {
-  const DBEditorState = convertFromRaw(JSON.parse(content.content));
-  const JsData = {
-    ...content,
-    content: EditorState.createWithContent(DBEditorState),
-  };
-  return JsData;
-};
-
-export const updateEditor = (id: string, value) => (dispatch) => {
-  saveContentToStore(value);
-  dispatch({
-    type: UPDATE_EDITOR,
-    payload: { id, value },
-  });
+  editors: {},
 };
 
 export const UPDATE_EDITOR = "UPDATE_EDITOR";
@@ -46,10 +18,43 @@ export const EditorReducer = (state = initialState, action) => {
         ...state,
         editors: {
           ...state.editors,
-          [action.payload.id]: action.payload.value,
+          [action.payload.id]: action.payload.data,
         },
       };
     default:
       return state;
   }
 };
+
+// Helpers
+const saveContentToStore = (id: string, content) => {
+  const JSContent = {
+    ...content,
+    id,
+    content: JSON.stringify(convertToRaw(content.getCurrentContent())),
+  };
+  return JSContent;
+};
+
+export const readContentFromStore = (editor) => {
+  if (editor?.content) {
+    const DBEditorState = convertFromRaw(JSON.parse(editor.content));
+    const JsData = {
+      ...editor,
+      content: EditorState.createWithContent(DBEditorState),
+    };
+    return JsData.content;
+  } else {
+    return EditorState.createEmpty();
+  }
+};
+// Thunks
+export const updateEditor = (id: string, value) => (dispatch) => {
+  dispatch({
+    type: UPDATE_EDITOR,
+    payload: { id, data: saveContentToStore(id, value) },
+  });
+};
+// Selector
+export const getEditor = (state, id) =>
+  readContentFromStore(state.editors.editors[id]);
