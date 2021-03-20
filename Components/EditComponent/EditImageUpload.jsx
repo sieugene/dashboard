@@ -10,16 +10,22 @@ const Editor = dynamic(
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import "draft-js/dist/Draft.css";
 import { useEditor } from "./useEditor";
+import { service } from "../../services";
 
 export const EditImageUpload = ({ id }) => {
   const { editorState, setEditorState } = useEditor(id);
 
   function uploadImageCallBack(file) {
-    return new Promise((resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
       const reader = new FileReader();
       reader.onload = (e) => resolve({ data: { link: e.target.result } });
       reader.onerror = (e) => reject(e);
       reader.readAsDataURL(file);
+
+      const fd = new FormData();
+      fd.append("image", file, file.name);
+
+      const response = await service.upload(fd);
     });
   }
 

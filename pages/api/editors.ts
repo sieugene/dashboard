@@ -1,5 +1,4 @@
-import { EditorController } from "./../../controllers/EditorController";
-// Next.js API route support: https://nextjs.org/docs/api-routes/introduction
+import { EditorController } from "../../server/controllers/EditorController";
 
 export default async (req, res) => {
   if (req.method === "POST") {

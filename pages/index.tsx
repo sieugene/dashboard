@@ -1,19 +1,15 @@
 import { Row } from "antd";
-import axios from "axios";
 import Head from "next/head";
 import { DragndropMultiple } from "../Components/DragndropWrapper";
 import { EditImageUpload } from "../Components/EditComponent/EditImageUpload";
+import { service } from "../services";
 
 export default function Home() {
   const addData = () => {
-    axios.post("http://localhost:3000/api/editors", null, {
-      params: {
-        data: { test: "key" },
-      },
-    });
+    service.editorsUpdate({ test: "key" });
   };
   const getAll = () => {
-    axios.get("http://localhost:3000/api/editors");
+    service.allEditors();
   };
   return (
     <>
