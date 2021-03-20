@@ -19,9 +19,12 @@ type Props = {
   item: DragnItem;
 };
 
-export const DraggableCard: FC<Props> = ({ item, index, deleteItem, ind }) => {
+export const DraggableCard: FC<Props> = ({ item, index }) => {
+  if (!item.draggable) {
+    return <>{item.content}</>;
+  }
   return (
-    <Draggable draggableId={item.id} index={index}>
+    <Draggable draggableId={item.id} index={index} mode="virtual">
       {(provided, snapshot) => (
         <div
           ref={provided.innerRef}

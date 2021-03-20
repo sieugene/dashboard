@@ -11,7 +11,6 @@ import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import "draft-js/dist/Draft.css";
 import { useEditor } from "./useEditor";
 import { service } from "../../services";
-import memoizeOne from "memoize-one";
 
 export const EditImageUpload = ({ id }) => {
   const { editorState, setEditorState } = useEditor(id);

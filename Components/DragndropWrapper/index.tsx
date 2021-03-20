@@ -14,7 +14,16 @@ export const DragndropMultiple: FC<Props> = ({ children }) => {
   const [state, setState] = useState<DragnItemsList[]>(childIterator(children));
 
   function onDragEnd(result) {
-    const { source, destination } = result;
+    const { source, destination, draggableId } = result;
+    const targetItem: any = state.reduce((item, items) => {
+      const search = items.find((item) => item.id === draggableId);
+      if (search) {
+        item = search.content ?? search;
+      }
+      return item;
+    }, {});
+    const targetDraggable =
+      targetItem?.props?.draggable === false ? false : true;
 
     if (!destination) {
       return;
@@ -35,7 +44,9 @@ export const DragndropMultiple: FC<Props> = ({ children }) => {
       newState[sInd] = result[sInd];
       newState[dInd] = result[dInd];
 
-      setState(newState.filter((group) => group.length));
+      if (targetDraggable) {
+        setState(newState.filter((group) => group.length));
+      }
     }
   }
 
