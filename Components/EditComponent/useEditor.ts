@@ -1,4 +1,4 @@
-import { EditorState, convertFromRaw, convertToRaw } from "draft-js";
+import { EditorState } from "draft-js";
 import {
   readContentFromStore,
   updateEditor,
