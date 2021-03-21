@@ -1,5 +1,7 @@
 .drag__wrap {
   display: flex;
-  flex-wrap: wrap;
+  // flex-wrap: wrap;
   width: 100%;
+  overflow: auto;
+  height: 100%;
 }

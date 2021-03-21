@@ -1,11 +1,14 @@
 import React, { FC, useState } from "react";
 import { DragDropContext } from "react-beautiful-dnd";
 import { childIterator } from "../../Utils/childIterator";
-import { DragnItemsList } from "../../Utils/countInArray";
+import { DragnItemsList, generateItems } from "../../Utils/countInArray";
 import { moveItems } from "../../Utils/moveItems";
 import { reorder } from "../../Utils/reorder";
 import { DroppableElement } from "../DroppableElement/DroppableElement";
+import { Panel } from "../Panel/Panel";
+import { v4 as uuidv4 } from "uuid";
 import s from "./index.module.scss";
+import { EditImageUpload } from "../EditComponent/EditImageUpload";
 type Props = {
   children: JSX.Element[];
 };
@@ -15,7 +18,6 @@ export const DragndropMultiple: FC<Props> = ({ children }) => {
 
   function onDragEnd(result) {
     const { source, destination } = result;
-
     if (!destination) {
       return;
     }
@@ -24,20 +26,40 @@ export const DragndropMultiple: FC<Props> = ({ children }) => {
 
     const isNotChangeCol = sInd === dInd;
 
+    const sourceElement = state[sInd]
+      ? state[sInd]
+      : createMoveElement(source.droppableId);
+
     if (isNotChangeCol) {
       const items = reorder(state[sInd], source.index, destination.index);
       const newState = [...state];
       newState[sInd] = items;
       setState(newState);
     } else {
-      const result = moveItems(state[sInd], state[dInd], source, destination);
-      const newState = [...state];
-      newState[sInd] = result[sInd];
-      newState[dInd] = result[dInd];
+      const result = moveItems(sourceElement, state[dInd], source, destination);
 
+      const newState = [...state];
+      // If create new move element, get by type in result
+      if (!sInd) {
+        newState[dInd].push(...result[source.droppableId]);
+      } else {
+        newState[sInd] = result[sInd];
+        newState[dInd] = result[dInd];
+      }
       setState(newState.filter((group) => group.length));
     }
   }
+
+  const createMoveElement = (type: string) => {
+    const elements = {
+      TEXT__ELEMENT: {
+        content: <EditImageUpload id={uuidv4()} />,
+        id: uuidv4(),
+      },
+    };
+    const create = elements[type];
+    return generateItems(1, 0, create.content);
+  };
 
   const deleteItem = (ind: number, index: number) => {
     const newState = [...state];
@@ -73,6 +95,7 @@ export const DragndropMultiple: FC<Props> = ({ children }) => {
               deleteItem={deleteItem}
             />
           ))}
+          <Panel />
         </DragDropContext>
       </div>
     </div>

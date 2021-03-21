@@ -1,3 +1,4 @@
+import { v4 as uuidv4 } from "uuid";
 /**
  * Список карточек
  *
@@ -17,6 +18,6 @@ export const generateItems = (
   childrens?: React.ReactNode[]
 ): DragnItemsList =>
   Array.from({ length: count }, (v, k) => k).map((k) => ({
-    id: `item-${k + offset}-${new Date().getTime()}`,
+    id: uuidv4(),
     content: (childrens && childrens[k]) ?? (childrens || ""),
   }));
