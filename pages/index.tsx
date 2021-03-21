@@ -2,6 +2,7 @@ import { Row } from "antd";
 import Head from "next/head";
 import { DragndropMultiple } from "../Components/DragndropWrapper";
 import { EditImageUpload } from "../Components/EditComponent/EditImageUpload";
+import { NodraggableElement } from "../Components/NodraggableElement/NodraggableElement";
 import { service } from "../services";
 
 export default function Home() {
@@ -25,8 +26,6 @@ export default function Home() {
           <DragndropMultiple>
             <EditImageUpload id={"test"} />
             <EditImageUpload id={"test2"} />
-            {/* <EditImageUpload id={"test2"} />
-            <EditImageUpload id={"test3"} /> */}
           </DragndropMultiple>
         )}
       </Row>

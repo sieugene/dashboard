@@ -28,7 +28,7 @@ export const DragndropMultiple: FC<Props> = ({ children }) => {
 
     const sourceElement = state[sInd]
       ? state[sInd]
-      : createMoveElement(source.droppableId);
+      : createMoveElement(source.droppableId, uuidv4());
 
     if (isNotChangeCol) {
       const items = reorder(state[sInd], source.index, destination.index);
@@ -40,8 +40,8 @@ export const DragndropMultiple: FC<Props> = ({ children }) => {
 
       const newState = [...state];
       // If create new move element, get by type in result
-      if (!sInd) {
-        newState[dInd].push(...result[source.droppableId]);
+      if (!sInd && sInd !== 0) {
+        newState[dInd] = [...newState[dInd], ...result[source.droppableId]];
       } else {
         newState[sInd] = result[sInd];
         newState[dInd] = result[dInd];
@@ -50,11 +50,11 @@ export const DragndropMultiple: FC<Props> = ({ children }) => {
     }
   }
 
-  const createMoveElement = (type: string) => {
+  const createMoveElement = (type: string, id) => {
     const elements = {
       TEXT__ELEMENT: {
-        content: <EditImageUpload id={uuidv4()} />,
-        id: uuidv4(),
+        content: <EditImageUpload id={id} />,
+        id,
       },
     };
     const create = elements[type];
