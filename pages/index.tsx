@@ -2,7 +2,6 @@ import { Row } from "antd";
 import Head from "next/head";
 import { DragndropMultiple } from "../Components/DragndropWrapper";
 import { EditImageUpload } from "../Components/EditComponent/EditImageUpload";
-import { NodraggableElement } from "../Components/NodraggableElement/NodraggableElement";
 import { service } from "../services";
 
 export default function Home() {
@@ -24,8 +23,12 @@ export default function Home() {
       <Row justify="center">
         {process.browser && (
           <DragndropMultiple>
-            <EditImageUpload id={"test"} />
-            <EditImageUpload id={"test2"} />
+            <>
+              <div>List</div>
+            </>
+            <>
+              <div>List 2</div>
+            </>
           </DragndropMultiple>
         )}
       </Row>

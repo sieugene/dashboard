@@ -9,6 +9,8 @@ const getItemStyle = (isDragging, draggableStyle) => ({
   padding: grid * 2,
   margin: `0 0 ${grid}px 0`,
   background: isDragging ? "lightgreen" : "white",
+  border: "1px solid rgb(0 0 0 / 26%)",
+  cursor: "auto",
   ...draggableStyle,
 });
 

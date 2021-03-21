@@ -41,7 +41,6 @@ export const EditImageUpload = ({ id }) => {
 
   return (
     <div className="rdw-storybook-root">
-      <h3>Image option supports image upload also.</h3>
       <Editor
         editorState={editorState}
         onEditorStateChange={setEditorState}
@@ -52,6 +51,8 @@ export const EditImageUpload = ({ id }) => {
           image: {
             uploadCallback: uploadImageCallBack,
             previewImage: true,
+            urlEnabled: false,
+            alignmentEnabled: false,
           },
         }}
       />

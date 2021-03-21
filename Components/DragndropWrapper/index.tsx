@@ -9,15 +9,16 @@ import { Panel } from "../Panel/Panel";
 import { v4 as uuidv4 } from "uuid";
 import s from "./index.module.scss";
 import { EditImageUpload } from "../EditComponent/EditImageUpload";
+import { EditText } from "../EditComponent/EditText";
 type Props = {
   children: JSX.Element[];
 };
 
-export const DragndropMultiple: FC<Props> = ({ children }) => {
+export const DragndropMultiple: FC<Props> = React.memo(({ children }) => {
   const [state, setState] = useState<DragnItemsList[]>(childIterator(children));
 
   function onDragEnd(result) {
-    const { source, destination } = result;
+    const { source, destination, draggableId } = result;
     if (!destination) {
       return;
     }
@@ -28,7 +29,11 @@ export const DragndropMultiple: FC<Props> = ({ children }) => {
 
     const sourceElement = state[sInd]
       ? state[sInd]
-      : createMoveElement(source.droppableId, uuidv4());
+      : createMoveElement(draggableId, uuidv4());
+
+    if (!sourceElement || !state[dInd]) {
+      return null;
+    }
 
     if (isNotChangeCol) {
       const items = reorder(state[sInd], source.index, destination.index);
@@ -37,7 +42,6 @@ export const DragndropMultiple: FC<Props> = ({ children }) => {
       setState(newState);
     } else {
       const result = moveItems(sourceElement, state[dInd], source, destination);
-
       const newState = [...state];
       // If create new move element, get by type in result
       if (!sInd && sInd !== 0) {
@@ -53,6 +57,10 @@ export const DragndropMultiple: FC<Props> = ({ children }) => {
   const createMoveElement = (type: string, id) => {
     const elements = {
       TEXT__ELEMENT: {
+        content: <EditText id={id} />,
+        id,
+      },
+      EDITOR_IMAGE: {
         content: <EditImageUpload id={id} />,
         id,
       },
@@ -100,4 +108,4 @@ export const DragndropMultiple: FC<Props> = ({ children }) => {
       </div>
     </div>
   );
-};
+});
