@@ -1,0 +1,41 @@
+.uploadContainer {
+  .video {
+    outline: none;
+    border: 1px solid black;
+    padding: 20px;
+    video {
+      outline: none;
+      cursor: pointer;
+    }
+  }
+  .videoInput {
+    position: absolute;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    opacity: 0;
+    cursor: pointer;
+  }
+  label {
+    width: 100%;
+    border: 3px dashed black;
+    display: flex;
+    height: 105px;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    color: black;
+    font-weight: 500;
+    font-size: 16px;
+    span {
+      font-size: 24px;
+    }
+    transition: 0.3s all ease;
+  }
+  &:hover {
+    label {
+      opacity: 0.2;
+      cursor: pointer;
+    }
+  }
+}
