@@ -26,7 +26,7 @@ export const EditImageUpload = ({ id }) => {
       reader.readAsDataURL(file);
 
       const fd = new FormData();
-      fd.append("image", file, file.name);
+      fd.append("file", file, file.name);
       try {
         const { data } = await service.upload(fd);
         if (data?.link) {

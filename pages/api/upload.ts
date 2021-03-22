@@ -11,10 +11,12 @@ const apiRoute = nextConnect({
   },
 });
 
-apiRoute.use(UploadController.upload().single("image"));
+apiRoute.use(UploadController.upload().single("file"));
 
 apiRoute.post((req: NextApiResponse & { file: { filename: string } }, res) => {
-  res.status(200).json({ link: `/uploads/${req.file.filename}` });
+  setTimeout(() => {
+    res.status(200).json({ link: `/uploads/${req.file.filename}` });
+  }, 1500);
 });
 
 export default apiRoute;

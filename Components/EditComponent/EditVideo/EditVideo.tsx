@@ -3,23 +3,46 @@
 import { CloudUploadOutlined } from "@ant-design/icons";
 import React, { useRef, useState } from "react";
 import ContentEditable from "react-contenteditable";
+import { service } from "../../../services";
 import style from "./EditVideo.module.scss";
 
 export const EditVideo = () => {
   const input = useRef();
   const [state, setstate] = useState(null);
+  const [load, setload] = useState(false);
   const contentEditable = useRef(null);
   const handleChange = (evt) => {
     setstate({ html: evt.target.value });
   };
 
-  // FILE
-
-  const onchange = (event) => {
+  const onchange = async (event) => {
     const { files } = event.target;
-    if (files?.length) {
-      const videoUrl = URL.createObjectURL(files[0]);
-      videoUrl && setstate({ html: createVideoTag(videoUrl) });
+    const file = files?.length && files[0];
+    if (file) {
+      setload(true);
+      const result = await new Promise(async (resolve, reject) => {
+        let videoUrl;
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          videoUrl = URL.createObjectURL(file);
+        };
+        reader.onerror = (e) => reject(e);
+        reader.readAsDataURL(file);
+
+        const fd = new FormData();
+        fd.append("file", file, file.name);
+        try {
+          const { data } = await service.upload(fd);
+          if (data?.link) {
+            resolve(data.link);
+          }
+        } catch (error) {
+          videoUrl = null;
+        } finally {
+          setload(false);
+        }
+      });
+      result && setstate({ html: createVideoTag(result) });
     }
   };
 
@@ -45,7 +68,7 @@ export const EditVideo = () => {
   return (
     <div style={{ position: "relative" }}>
       {!state && (
-        <form className={style.uploadContainer}>
+        <form className={`${style.uploadContainer} ${load ? style.load : ""}`}>
           <input
             ref={input}
             name="video"
@@ -54,10 +77,11 @@ export const EditVideo = () => {
             accept="video/*"
             capture="camcorder;fileupload"
             className={style.videoInput}
+            disabled={load}
           />
           <label htmlFor="video">
             <CloudUploadOutlined />
-            Drop video here
+            {load ? "Loading..." : "Drop video here"}
           </label>
         </form>
       )}
