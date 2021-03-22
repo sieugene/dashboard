@@ -1,7 +1,6 @@
 import { Row } from "antd";
 import Head from "next/head";
 import { DragndropMultiple } from "../Components/DragndropWrapper";
-import { EditImageUpload } from "../Components/EditComponent/EditImageUpload";
 import { service } from "../services";
 
 export default function Home() {
