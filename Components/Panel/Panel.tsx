@@ -2,7 +2,11 @@ import React, { FC } from "react";
 import { Droppable, Draggable } from "react-beautiful-dnd";
 import style from "./Panel.module.scss";
 import { PanelItem } from "./PanelItems/PanelItem";
-import { FileTextOutlined, FileImageOutlined } from "@ant-design/icons";
+import {
+  FileTextOutlined,
+  FileImageOutlined,
+  LayoutOutlined,
+} from "@ant-design/icons";
 
 export const Panel: FC = () => {
   return (
@@ -34,6 +38,20 @@ export const Panel: FC = () => {
                 >
                   <PanelItem text="Image">
                     <FileImageOutlined />
+                  </PanelItem>
+                </div>
+              )}
+            </Draggable>
+
+            <Draggable draggableId={"ADD_LAYOUT"} index={3}>
+              {(provided, snapshot) => (
+                <div
+                  ref={provided.innerRef}
+                  {...provided.draggableProps}
+                  {...provided.dragHandleProps}
+                >
+                  <PanelItem text="Layout">
+                    <LayoutOutlined />
                   </PanelItem>
                 </div>
               )}

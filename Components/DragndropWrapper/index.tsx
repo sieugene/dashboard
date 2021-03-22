@@ -19,7 +19,11 @@ export const DragndropMultiple: FC<Props> = React.memo(({ children }) => {
     onDragEndHandler(result, state, setState, createMoveElement);
   }
 
-  const createMoveElement = (type: string, id: string) => {
+  const createMoveElement = (
+    type: string,
+    id: string,
+    columnOccurrences: Boolean
+  ) => {
     const elements = {
       TEXT__ELEMENT: {
         content: <EditText id={id} />,
@@ -29,9 +33,22 @@ export const DragndropMultiple: FC<Props> = React.memo(({ children }) => {
         content: <EditImageUpload id={id} />,
         id,
       },
+      ADD_LAYOUT: {
+        extend: generateItems(1),
+      },
     };
     const create = elements[type];
-    return generateItems(1, 0, create.content);
+    // Если вне колонок
+    if (!columnOccurrences) {
+      return null;
+    }
+
+    if (create.extend) {
+      setState([...state, create.extend]);
+      return null;
+    } else {
+      return generateItems(1, 0, create.content);
+    }
   };
 
   const deleteItem = (ind: number, index: number) => {

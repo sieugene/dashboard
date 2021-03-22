@@ -5,12 +5,23 @@ import { DropResult } from "react-beautiful-dnd";
 import { v4 as uuidv4 } from "uuid";
 
 type SetState = React.Dispatch<React.SetStateAction<DragnItemsList[]>>;
-
+/**
+ * onDragEndHandler - обработчик onDragEnd события, обновляет положение элементов в столбах
+ * @param {result} first - result от onDragEnd
+ * @param {state} second - state
+ * @param {setState} three - обновление стейта
+ * @param {createMoveElement} four - функция для создания элемента, должен содержать content и id
+ * @returns {[id: string, content: ChildNode]}
+ */
 export const onDragEndHandler = (
   result: DropResult,
   state: DragnItemsList[],
   setState: SetState,
-  createMoveElement: (type: string, id: string) => DragnItemsList
+  createMoveElement: (
+    type: string,
+    id: string,
+    columnOccurrences: Boolean
+  ) => DragnItemsList
 ) => {
   const { source, destination, draggableId } = result;
   if (!destination) {
@@ -21,7 +32,11 @@ export const onDragEndHandler = (
   const isNotChangeCol = sourceId === newLocationId;
   const sourceElement = state[sourceId]
     ? state[sourceId]
-    : createMoveElement(draggableId, uuidv4());
+    : createMoveElement(
+        draggableId,
+        uuidv4(),
+        Boolean(newLocationId === 0 ? true : newLocationId)
+      );
   const unrelated = !sourceElement || !state[newLocationId];
 
   if (unrelated) {

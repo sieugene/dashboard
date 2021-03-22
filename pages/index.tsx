@@ -16,10 +16,16 @@ export default function Home() {
         <title>Create Next App</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <button onClick={addData}>call</button>
-      <button onClick={getAll}>get</button>
+      {/* <button onClick={addData}>call</button>
+      <button onClick={getAll}>get</button> */}
 
-      <Row justify="center">
+      <Row
+        justify="center"
+        style={{
+          position: "absolute",
+          left: "250px",
+        }}
+      >
         {process.browser && (
           <DragndropMultiple>
             <>
