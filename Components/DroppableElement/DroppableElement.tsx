@@ -17,28 +17,31 @@ type Props = {
   deleteItem: (ind: number, index: number) => void;
 };
 
-export const DroppableElement: FC<Props> = ({ ind, el, deleteItem }) => {
-  return (
-    <Droppable droppableId={`${ind}`}>
-      {(provided, snapshot) => (
-        <div
-          ref={provided.innerRef}
-          style={getListStyle(snapshot.isDraggingOver)}
-          className={s.drop__element}
-          {...provided.droppableProps}
-        >
-          {el.map((item, index) => (
-            <DraggableCard
-              item={item}
-              index={index}
-              key={item.id}
-              ind={ind}
-              deleteItem={deleteItem}
-            />
-          ))}
-          {provided.placeholder}
-        </div>
-      )}
-    </Droppable>
-  );
-};
+export const DroppableElement: FC<Props> = React.memo(
+  ({ ind, el, deleteItem }) => {
+    return (
+      <Droppable droppableId={`${ind}`}>
+        {(provided, snapshot) => (
+          <div
+            ref={provided.innerRef}
+            style={getListStyle(snapshot.isDraggingOver)}
+            className={s.drop__element}
+            {...provided.droppableProps}
+          >
+            <input className={s.titleCol} defaultValue="ColName" />
+            {el.map((item, index) => (
+              <DraggableCard
+                item={item}
+                index={index}
+                key={item.id}
+                ind={ind}
+                deleteItem={deleteItem}
+              />
+            ))}
+            {provided.placeholder}
+          </div>
+        )}
+      </Droppable>
+    );
+  }
+);

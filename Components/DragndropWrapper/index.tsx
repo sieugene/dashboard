@@ -1,55 +1,23 @@
 import React, { FC, useState } from "react";
 import { DragDropContext, DropResult } from "react-beautiful-dnd";
 import { childIterator } from "../../Utils/childIterator";
-import { DragnItemsList, generateItems } from "../../Utils/countInArray";
+import { DragnItemsList } from "../../Utils/countInArray";
 import { DroppableElement } from "../DroppableElement/DroppableElement";
 import { Panel } from "../Panel/Panel";
 import s from "./index.module.scss";
-import { EditImageUpload } from "../EditComponent/EditImageUpload";
-import { EditText } from "../EditComponent/EditText";
 import { onDragEndHandler } from "./DragndropWrapper.functions";
+import { useCreateMoveElement } from "../../hooks/useCreateMoveElement";
 type Props = {
   children: JSX.Element[];
 };
 
 export const DragndropMultiple: FC<Props> = React.memo(({ children }) => {
   const [state, setState] = useState<DragnItemsList[]>(childIterator(children));
+  const createMoveElement = useCreateMoveElement(setState, state);
 
   function onDragEnd(result: DropResult) {
     onDragEndHandler(result, state, setState, createMoveElement);
   }
-
-  const createMoveElement = (
-    type: string,
-    id: string,
-    columnOccurrences: Boolean
-  ) => {
-    const elements = {
-      TEXT__ELEMENT: {
-        content: <EditText id={id} />,
-        id,
-      },
-      EDITOR_IMAGE: {
-        content: <EditImageUpload id={id} />,
-        id,
-      },
-      ADD_LAYOUT: {
-        extend: generateItems(1),
-      },
-    };
-    const create = elements[type];
-    // Если вне колонок
-    if (!columnOccurrences) {
-      return null;
-    }
-
-    if (create.extend) {
-      setState([...state, create.extend]);
-      return null;
-    } else {
-      return generateItems(1, 0, create.content);
-    }
-  };
 
   const deleteItem = (ind: number, index: number) => {
     const newState = [...state];
@@ -58,36 +26,18 @@ export const DragndropMultiple: FC<Props> = React.memo(({ children }) => {
   };
 
   return (
-    <div>
-      {/* <button
-        type="button"
-        onClick={() => {
-          setState([...state, []]);
-        }}
-      >
-        Add new group
-      </button>
-      <button
-        type="button"
-        onClick={() => {
-          setState([...state, generateItems(1)]);
-        }}
-      >
-        Add new item
-      </button> */}
-      <div className={s.drag__wrap}>
-        <DragDropContext onDragEnd={onDragEnd}>
-          {state.map((el, ind) => (
-            <DroppableElement
-              ind={ind}
-              el={el}
-              key={ind}
-              deleteItem={deleteItem}
-            />
-          ))}
-          <Panel />
-        </DragDropContext>
-      </div>
+    <div className={s.drag__wrap}>
+      <DragDropContext onDragEnd={onDragEnd}>
+        {state.map((el, ind) => (
+          <DroppableElement
+            ind={ind}
+            el={el}
+            key={ind}
+            deleteItem={deleteItem}
+          />
+        ))}
+        <Panel />
+      </DragDropContext>
     </div>
   );
 });

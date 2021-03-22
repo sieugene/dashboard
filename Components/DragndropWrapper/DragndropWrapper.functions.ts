@@ -3,8 +3,6 @@ import { reorder } from "./../../Utils/reorder";
 import { DragnItemsList } from "./../../Utils/countInArray";
 import { DropResult } from "react-beautiful-dnd";
 import { v4 as uuidv4 } from "uuid";
-
-type SetState = React.Dispatch<React.SetStateAction<DragnItemsList[]>>;
 /**
  * onDragEndHandler - обработчик onDragEnd события, обновляет положение элементов в столбах
  * @param {result} first - result от onDragEnd
@@ -16,7 +14,7 @@ type SetState = React.Dispatch<React.SetStateAction<DragnItemsList[]>>;
 export const onDragEndHandler = (
   result: DropResult,
   state: DragnItemsList[],
-  setState: SetState,
+  setState: React.Dispatch<React.SetStateAction<DragnItemsList[]>>,
   createMoveElement: (
     type: string,
     id: string,

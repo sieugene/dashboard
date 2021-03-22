@@ -21,27 +21,28 @@ type Props = {
   item: DragnItem;
 };
 
-export const DraggableCard: FC<Props> = ({ item, index, deleteItem, ind }) => {
-  return (
-    <Draggable draggableId={item.id} index={index}>
-      {(provided, snapshot) => (
-        <div
-          ref={provided.innerRef}
-          {...provided.draggableProps}
-          {...provided.dragHandleProps}
-          style={getItemStyle(
-            snapshot.isDragging,
-            provided.draggableProps.style
-          )}
-        >
+export const DraggableCard: FC<Props> = React.memo(
+  ({ item, index, deleteItem, ind }) => {
+    return (
+      <Draggable draggableId={item.id} index={index}>
+        {(provided, snapshot) => (
           <div
-            style={{
-              display: "flex",
-              justifyContent: "space-around",
-            }}
+            ref={provided.innerRef}
+            {...provided.draggableProps}
+            {...provided.dragHandleProps}
+            style={getItemStyle(
+              snapshot.isDragging,
+              provided.draggableProps.style
+            )}
           >
-            {item.content}
-            {/* <button
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-around",
+              }}
+            >
+              {item.content}
+              {/* <button
               type="button"
               onClick={() => {
                 deleteItem(ind, index);
@@ -49,9 +50,10 @@ export const DraggableCard: FC<Props> = ({ item, index, deleteItem, ind }) => {
             >
               delete
             </button> */}
+            </div>
           </div>
-        </div>
-      )}
-    </Draggable>
-  );
-};
+        )}
+      </Draggable>
+    );
+  }
+);
