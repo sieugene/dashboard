@@ -2,12 +2,14 @@ import { EditorState, convertToRaw, convertFromRaw } from "draft-js";
 import { HYDRATE } from "next-redux-wrapper";
 
 // Constants
+export const UPDATE_EDITOR = "UPDATE_EDITOR";
 
 const initialState = {
   editors: {},
 };
 
-export const UPDATE_EDITOR = "UPDATE_EDITOR";
+// Types
+export type EditorTypes = "Editor" | "Video";
 
 export const EditorReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -49,12 +51,33 @@ export const readContentFromStore = (editor) => {
   }
 };
 // Thunks
-export const updateEditor = (id: string, value) => (dispatch) => {
-  dispatch({
-    type: UPDATE_EDITOR,
-    payload: { id, data: saveContentToStore(id, value) },
-  });
+export const updateEditor = (id: string, value, type: EditorTypes) => (
+  dispatch
+) => {
+  switch (type) {
+    case "Editor":
+      dispatch({
+        type: UPDATE_EDITOR,
+        payload: { id, data: saveContentToStore(id, value) },
+      });
+      break;
+    case "Video":
+      dispatch({
+        type: UPDATE_EDITOR,
+        payload: { id, data: value },
+      });
+    default:
+      break;
+  }
 };
 // Selector
-export const getEditor = (state, id) =>
-  readContentFromStore(state.editors.editors[id]);
+export const getEditor = (state, id: string, type: EditorTypes) => {
+  switch (type) {
+    case "Editor":
+      return readContentFromStore(state.editors.editors[id]);
+    case "Video":
+      return state.editors.editors[id] ?? "";
+    default:
+      return "";
+  }
+};

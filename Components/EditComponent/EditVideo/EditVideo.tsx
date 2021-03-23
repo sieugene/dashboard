@@ -4,15 +4,16 @@ import { CloudUploadOutlined } from "@ant-design/icons";
 import React, { useRef, useState } from "react";
 import ContentEditable from "react-contenteditable";
 import { service } from "../../../services";
+import { useEditor } from "../useEditor";
 import style from "./EditVideo.module.scss";
 
 export const EditVideo = () => {
+  const { editorState, setEditorState } = useEditor("tempId", "Video");
   const input = useRef();
-  const [state, setstate] = useState(null);
   const [load, setload] = useState(false);
   const contentEditable = useRef(null);
   const handleChange = (evt) => {
-    setstate({ html: evt.target.value });
+    setEditorState(evt.target.value);
   };
 
   const onchange = async (event) => {
@@ -42,7 +43,7 @@ export const EditVideo = () => {
           setload(false);
         }
       });
-      result && setstate({ html: createVideoTag(result) });
+      result && setEditorState(createVideoTag(result));
     }
   };
 
@@ -67,7 +68,7 @@ export const EditVideo = () => {
   };
   return (
     <div style={{ position: "relative" }}>
-      {!state && (
+      {!editorState && (
         <form className={`${style.uploadContainer} ${load ? style.load : ""}`}>
           <input
             ref={input}
@@ -85,10 +86,10 @@ export const EditVideo = () => {
           </label>
         </form>
       )}
-      {state?.html && (
+      {editorState && (
         <ContentEditable
           innerRef={contentEditable}
-          html={state.html}
+          html={editorState}
           disabled={false}
           onChange={handleChange}
           tagName="div"
