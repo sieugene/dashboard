@@ -2,6 +2,7 @@ import { Row } from "antd";
 import Head from "next/head";
 import { DragndropMultiple } from "../Components/DragndropWrapper";
 import { service } from "../services";
+import {EditChart} from '../Components/EditComponent/EditChart/EditChart'
 
 export default function Home() {
   const addData = () => {
@@ -30,6 +31,7 @@ export default function Home() {
           <DragndropMultiple>
             <>
               <div>List 2</div>
+              <EditChart />
             </>
             <>
               <div>List 2</div>

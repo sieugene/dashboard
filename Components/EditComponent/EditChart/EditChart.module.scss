@@ -1,0 +1,31 @@
+.popup {
+  width: 100% !important;
+}
+.wrapModal {
+  .col {
+    &:first-child {
+      margin-right: 50px;
+    }
+  }
+}
+.edit {
+  -webkit-box-shadow: 4px 4px 8px 0px rgba(34, 60, 80, 0.2);
+  -moz-box-shadow: 4px 4px 8px 0px rgba(34, 60, 80, 0.2);
+  box-shadow: 4px 4px 8px 0px rgba(34, 60, 80, 0.2);
+  width: 50px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  cursor: pointer;
+  align-items: center;
+  position: absolute;
+  z-index: 9;
+  right: 0;
+  transition: 0.3s all ease;
+  span{
+    font-size: 20px;
+  }
+  &:hover {
+    opacity: 0.75;
+  }
+}
