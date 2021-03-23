@@ -10,14 +10,23 @@ import { v4 as uuidv4 } from "uuid";
 export type DragnItem = {
   id: string;
   content: React.ReactNode;
+  element: {
+    type: string;
+    props: any;
+  };
 };
 export type DragnItemsList = DragnItem[];
 export const generateItems = (
   count: number = 1,
   offset: number = 0,
-  childrens?: React.ReactNode[]
-): DragnItemsList =>
-  Array.from({ length: count }, (v, k) => k).map((k) => ({
+  childrens?: React.ReactNode[] & any
+): DragnItemsList => {
+  return Array.from({ length: count }, (v, k) => k).map((k) => ({
     id: uuidv4(),
     content: (childrens && childrens[k]) ?? (childrens || ""),
+    element: {
+      type: childrens && (childrens.type?.name ?? childrens.type),
+      props: childrens && childrens.props,
+    },
   }));
+};

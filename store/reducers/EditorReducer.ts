@@ -3,9 +3,11 @@ import { HYDRATE } from "next-redux-wrapper";
 
 // Constants
 export const UPDATE_EDITOR = "UPDATE_EDITOR";
+export const SET_COLS = "SET_COLS";
 
 const initialState = {
   editors: {},
+  cols: null,
 };
 
 const staticData: ChartData = [
@@ -49,6 +51,11 @@ export const EditorReducer = (state = initialState, action) => {
           ...state.editors,
           [action.payload.id]: action.payload.data,
         },
+      };
+    case SET_COLS:
+      return {
+        ...state,
+        cols: action.payload,
       };
     default:
       return state;
@@ -97,6 +104,22 @@ export const updateEditor = (id: string, value, type: EditorTypes) => (
     default:
       break;
   }
+};
+// Сохраняем элементы колонок и положения, для последующего сохранения и переобразования
+export const saveCols = (state) => (dispatch) => {
+  const cols = Array.from(state).reduce((formattedCols: any, col: any) => {
+    col?.forEach((el) => {
+      formattedCols.push({
+        element: el.element,
+        id: el.id,
+      });
+    });
+    return formattedCols;
+  }, []);
+  dispatch({
+    type: SET_COLS,
+    payload: cols,
+  });
 };
 // Selector
 export const getEditor = (state, id: string, type: EditorTypes) => {

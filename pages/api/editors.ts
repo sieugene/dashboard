@@ -12,7 +12,7 @@ export default async (req, res) => {
   } else if (req.method === "GET") {
     try {
       const result = await EditorController.getAll();
-      res.status(200).json({ data: result });
+      res.status(200).json(result);
     } catch (error) {
       res.status(400).json({ error });
     }

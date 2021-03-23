@@ -1,15 +1,17 @@
 import { Row } from "antd";
 import Head from "next/head";
+import { useDispatch } from "react-redux";
 import { DragndropMultiple } from "../Components/DragndropWrapper";
+import { Settings } from "../Components/Settings/Settings";
 import { service } from "../services";
 
 export default function Home() {
-  const addData = () => {
-    service.editorsUpdate({ test: "key" });
-  };
   const getAll = () => {
-    service.allEditors();
+    service.allEditors().then(({ data }) => {
+      // console.log(data);
+    });
   };
+  getAll();
   return (
     <>
       <Head>
@@ -18,7 +20,7 @@ export default function Home() {
       </Head>
       {/* <button onClick={addData}>call</button>
       <button onClick={getAll}>get</button> */}
-
+      <Settings />
       <Row
         justify="center"
         style={{
