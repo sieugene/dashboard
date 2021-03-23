@@ -1,5 +1,6 @@
 import { EditImageUpload } from "../Components/EditComponent/EditImageUpload";
 import { EditText } from "../Components/EditComponent/EditText";
+import { EditVideo } from "../Components/EditComponent/EditVideo/EditVideo";
 import { DragnItemsList, generateItems } from "../Utils/countInArray";
 
 export const useCreateMoveElement = (
@@ -22,6 +23,10 @@ export const useCreateMoveElement = (
       },
       ADD_LAYOUT: {
         extend: generateItems(1),
+      },
+      VIDEO: {
+        content: <EditVideo id={id} />,
+        id,
       },
     };
     const create = elements[type];

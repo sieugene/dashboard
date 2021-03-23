@@ -1,7 +1,6 @@
 import { Row } from "antd";
 import Head from "next/head";
 import { DragndropMultiple } from "../Components/DragndropWrapper";
-import { EditVideo } from "../Components/EditComponent/EditVideo/EditVideo";
 import { service } from "../services";
 
 export default function Home() {
@@ -30,9 +29,7 @@ export default function Home() {
         {process.browser && (
           <DragndropMultiple>
             <>
-              <div style={{width: "100%"}}>
-                <EditVideo />
-              </div>
+              <div>List 2</div>
             </>
             <>
               <div>List 2</div>

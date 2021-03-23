@@ -7,8 +7,8 @@ import { service } from "../../../services";
 import { useEditor } from "../useEditor";
 import style from "./EditVideo.module.scss";
 
-export const EditVideo = () => {
-  const { editorState, setEditorState } = useEditor("tempId", "Video");
+export const EditVideo = ({ id }) => {
+  const { editorState, setEditorState } = useEditor(id, "Video");
   const input = useRef();
   const [load, setload] = useState(false);
   const contentEditable = useRef(null);
