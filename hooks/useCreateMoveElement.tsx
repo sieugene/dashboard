@@ -1,3 +1,4 @@
+import { EditChart } from "../Components/EditComponent/EditChart/EditChart";
 import { EditImageUpload } from "../Components/EditComponent/EditImageUpload";
 import { EditText } from "../Components/EditComponent/EditText";
 import { EditVideo } from "../Components/EditComponent/EditVideo/EditVideo";
@@ -26,6 +27,10 @@ export const useCreateMoveElement = (
       },
       VIDEO: {
         content: <EditVideo id={id} />,
+        id,
+      },
+      CHART: {
+        content: <EditChart id={id} />,
         id,
       },
     };

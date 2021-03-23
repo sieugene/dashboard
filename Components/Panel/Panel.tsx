@@ -7,6 +7,7 @@ import {
   FileImageOutlined,
   LayoutOutlined,
   VideoCameraAddOutlined,
+  BarChartOutlined,
 } from "@ant-design/icons";
 
 export const Panel: FC = () => {
@@ -30,6 +31,10 @@ export const Panel: FC = () => {
 
             <PanelItem text="Video" draggableId={"VIDEO"} index={4}>
               <VideoCameraAddOutlined />
+            </PanelItem>
+
+            <PanelItem text="Chart" draggableId={"CHART"} index={5}>
+              <BarChartOutlined />
             </PanelItem>
 
             {provided.placeholder}

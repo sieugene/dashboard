@@ -8,8 +8,35 @@ const initialState = {
   editors: {},
 };
 
+const staticData: ChartData = [
+  {
+    label: "Series 1",
+    data: [
+      [0, 1],
+      [1, 2],
+      [2, 4],
+      [3, 2],
+      [4, 7],
+    ],
+  },
+  {
+    label: "Series 2",
+    data: [
+      [0, 3],
+      [1, 1],
+      [2, 5],
+      [3, 6],
+      [4, 4],
+    ],
+  },
+];
+
 // Types
-export type EditorTypes = "Editor" | "Video";
+export type EditorTypes = "Editor" | "Video" | "Chart";
+export type ChartData = {
+  label: string;
+  data: number[][];
+}[];
 
 export const EditorReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -62,6 +89,7 @@ export const updateEditor = (id: string, value, type: EditorTypes) => (
       });
       break;
     case "Video":
+    case "Chart":
       dispatch({
         type: UPDATE_EDITOR,
         payload: { id, data: value },
@@ -77,6 +105,8 @@ export const getEditor = (state, id: string, type: EditorTypes) => {
       return readContentFromStore(state.editors.editors[id]);
     case "Video":
       return state.editors.editors[id] ?? "";
+    case "Chart":
+      return state.editors.editors[id] ?? staticData;
     default:
       return "";
   }
