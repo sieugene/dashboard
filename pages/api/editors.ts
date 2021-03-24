@@ -2,7 +2,7 @@ import { EditorController } from "../../server/controllers/EditorController";
 
 export default async (req, res) => {
   if (req.method === "POST") {
-    const { data } = req.query;
+    const data = JSON.stringify(req.body);
     try {
       await EditorController.save(JSON.parse(data));
       res.status(201).json({ data });
@@ -17,4 +17,13 @@ export default async (req, res) => {
       res.status(400).json({ error });
     }
   }
+};
+
+export const config = {
+  api: {
+    bodyParser: {
+      sizeLimit: "10240kb",
+      // extended: true,
+    },
+  },
 };

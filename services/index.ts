@@ -12,10 +12,10 @@ export class Api {
   }
 
   editorsUpdate(data): Promise<AxiosResponse> {
-    return this.instance.post("/editors", null, {
-      params: {
-        data,
-      },
+    return this.instance.post("/editors", data, {
+      // headers: {
+      //   "Content-Type": "application/x-www-form-urlencoded",
+      // },
     });
   }
 
