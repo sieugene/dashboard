@@ -1,3 +1,35 @@
+# Dashboard
+
+Dashboard with dragndrop elements, includes text, image, video, charts.
+
+## Features (v0.1)
+
+- Separate panel with elements.
+- Expanding the functionality on the principle of openness and closeness.
+- Saving the position of the columns and the content of the elements after a reboot.
+- Dragndrop elements of images, videos, charts
+
+If you have any ideas about expanding the functionality or tips for improving it, write to me. Visit my website to 
+[contact me](https://sieugene.vercel.app/)
+
+> At the moment, there is a raw version of dashboard, 
+> in the future it is planned to expand the functionality 
+> in your free time. There are bugs in the application, performance problems.
+> Further updates will fix the problem with saving data and expand the features with the settings panel.
+
+## Tools
+This is a full stack application that includes. (The backend part is done using the next api)
+| Tool |
+| ------ 
+| NEXT 
+| React 
+| Draft js 
+| react-beautiful-dnd 
+| react-charts
+## Screenshots
+![Preview dashboard](https://github.com/sieugene/dashboard/blob/master/public/gh/1.jpg?raw=true)
+![Preview dashboard2](https://github.com/sieugene/dashboard/blob/master/public/gh/2.jpg?raw=true)
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
