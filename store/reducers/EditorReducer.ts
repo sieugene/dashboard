@@ -4,6 +4,7 @@ import { HYDRATE } from "next-redux-wrapper";
 // Constants
 export const UPDATE_EDITOR = "UPDATE_EDITOR";
 export const SET_COLS = "SET_COLS";
+export const SET_EDITORS = "SET_EDITORS";
 
 const initialState = {
   editors: {},
@@ -52,6 +53,11 @@ export const EditorReducer = (state = initialState, action) => {
           [action.payload.id]: action.payload.data,
         },
       };
+    case SET_EDITORS:
+      return {
+        ...state,
+        editors: action.payload,
+      };
     case SET_COLS:
       return {
         ...state,
@@ -60,6 +66,13 @@ export const EditorReducer = (state = initialState, action) => {
     default:
       return state;
   }
+};
+
+export const setEditors = (editors) => {
+  return {
+    type: SET_EDITORS,
+    payload: editors,
+  };
 };
 
 // Helpers
@@ -106,14 +119,18 @@ export const updateEditor = (id: string, value, type: EditorTypes) => (
   }
 };
 // Сохраняем элементы колонок и положения, для последующего сохранения и переобразования
-export const saveCols = (state) => (dispatch) => {
+export const setCols = (state) => (dispatch) => {
   const cols = Array.from(state).reduce((formattedCols: any, col: any) => {
-    col?.forEach((el) => {
-      formattedCols.push({
+    const colElementsTotal = col?.reduce((colElements, el) => {
+      colElements.push({
         element: el.element,
         id: el.id,
       });
-    });
+      return colElements;
+    }, []);
+    if (colElementsTotal && Array.isArray(colElementsTotal)) {
+      formattedCols.push(colElementsTotal);
+    }
     return formattedCols;
   }, []);
   dispatch({

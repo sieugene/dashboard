@@ -15,6 +15,14 @@ export type DragnItem = {
     props: any;
   };
 };
+export type DragnItemRaw = {
+  id: string;
+  element: {
+    type: string;
+    props: any;
+  };
+};
+export type DragnItemsRawList = DragnItemRaw[];
 export type DragnItemsList = DragnItem[];
 export const generateItems = (
   count: number = 1,

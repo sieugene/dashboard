@@ -1,26 +1,18 @@
-import React, { FC, useEffect, useState } from "react";
+import React, { FC } from "react";
 import { DragDropContext, DropResult } from "react-beautiful-dnd";
-import { childIterator } from "../../Utils/childIterator";
-import { DragnItemsList } from "../../Utils/countInArray";
 import { DroppableElement } from "../DroppableElement/DroppableElement";
 import { Panel } from "../Panel/Panel";
 import s from "./index.module.scss";
 import { onDragEndHandler } from "./DragndropWrapper.functions";
 import { useCreateMoveElement } from "../../hooks/useCreateMoveElement";
-import { saveCols } from "../../store/reducers/EditorReducer";
-import { useDispatch } from "react-redux";
+import { useDragnItems } from "./hooks/useDragnItems";
 type Props = {
   children: JSX.Element[];
 };
 
 export const DragndropMultiple: FC<Props> = React.memo(({ children }) => {
-  const dispatch = useDispatch();
-  const [state, setState] = useState<DragnItemsList[]>(childIterator(children));
+  const { state, setState } = useDragnItems(children);
   const createMoveElement = useCreateMoveElement(setState, state);
-
-  useEffect(() => {
-    dispatch(saveCols(state));
-  }, [state]);
 
   function onDragEnd(result: DropResult) {
     onDragEndHandler(result, state, setState, createMoveElement);

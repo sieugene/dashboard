@@ -1,14 +1,20 @@
 import { Row } from "antd";
 import Head from "next/head";
+import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { DragndropMultiple } from "../Components/DragndropWrapper";
 import { Settings } from "../Components/Settings/Settings";
 import { service } from "../services";
+import { setCols, setEditors } from "../store/reducers/EditorReducer";
 
 export default function Home() {
+  const [loading, setloading] = useState(true);
+  const dispatch = useDispatch();
   const getAll = () => {
     service.allEditors().then(({ data }) => {
-      // console.log(data);
+      dispatch(setCols(data.cols));
+      dispatch(setEditors(data.editors));
+      setloading(false);
     });
   };
   getAll();
@@ -28,7 +34,7 @@ export default function Home() {
           left: "250px",
         }}
       >
-        {process.browser && (
+        {process.browser && !loading && (
           <DragndropMultiple>
             <>
               <div>List 2</div>
