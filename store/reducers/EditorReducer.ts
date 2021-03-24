@@ -120,19 +120,21 @@ export const updateEditor = (id: string, value, type: EditorTypes) => (
 };
 // Сохраняем элементы колонок и положения, для последующего сохранения и переобразования
 export const setCols = (state) => (dispatch) => {
-  const cols = Array.from(state).reduce((formattedCols: any, col: any) => {
-    const colElementsTotal = col?.reduce((colElements, el) => {
-      colElements.push({
-        element: el.element,
-        id: el.id,
-      });
-      return colElements;
+  const cols =
+    state &&
+    Array.from(state).reduce((formattedCols: any, col: any) => {
+      const colElementsTotal = col?.reduce((colElements, el) => {
+        colElements.push({
+          element: el.element,
+          id: el.id,
+        });
+        return colElements;
+      }, []);
+      if (colElementsTotal && Array.isArray(colElementsTotal)) {
+        formattedCols.push(colElementsTotal);
+      }
+      return formattedCols;
     }, []);
-    if (colElementsTotal && Array.isArray(colElementsTotal)) {
-      formattedCols.push(colElementsTotal);
-    }
-    return formattedCols;
-  }, []);
   dispatch({
     type: SET_COLS,
     payload: cols,
@@ -140,14 +142,16 @@ export const setCols = (state) => (dispatch) => {
 };
 // Selector
 export const getEditor = (state, id: string, type: EditorTypes) => {
-  switch (type) {
-    case "Editor":
-      return readContentFromStore(state.editors.editors[id]);
-    case "Video":
-      return state.editors.editors[id] ?? "";
-    case "Chart":
-      return state.editors.editors[id] ?? staticData;
-    default:
-      return "";
+  if (state.editors?.editors) {
+    switch (type) {
+      case "Editor":
+        return readContentFromStore(state.editors.editors[id]);
+      case "Video":
+        return state.editors.editors[id] ?? "";
+      case "Chart":
+        return state.editors.editors[id] ?? staticData;
+      default:
+        return "";
+    }
   }
 };

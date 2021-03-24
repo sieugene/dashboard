@@ -36,12 +36,8 @@ export default function Home() {
       >
         {process.browser && !loading && (
           <DragndropMultiple>
-            <>
-              <div>List 2</div>
-            </>
-            <>
-              <div>List 2</div>
-            </>
+            <></>
+            <></>
           </DragndropMultiple>
         )}
       </Row>
