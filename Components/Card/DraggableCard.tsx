@@ -1,16 +1,12 @@
 import React, { FC } from "react";
 import { Draggable } from "react-beautiful-dnd";
 import { DragnItem } from "../../Utils/countInArray";
+import style from "./DraggableCard.module.scss";
 
-const grid = 8;
-
-const getItemStyle = (isDragging, draggableStyle) => ({
-  userSelect: "none",
-  padding: grid * 2,
-  margin: `0 0 ${grid}px 0`,
-  background: isDragging ? "lightgreen" : "white",
-  border: "1px solid rgb(0 0 0 / 26%)",
-  cursor: "auto",
+const getItemStyle = (isDraggingOver, draggableStyle) => ({
+  padding: 8,
+  // cursor: isDraggingOver ? "drag" : "auto",
+  background: isDraggingOver ? "lightgreen" : "white",
   ...draggableStyle,
 });
 
@@ -31,16 +27,12 @@ export const DraggableCard: FC<Props> = React.memo(
             {...provided.draggableProps}
             {...provided.dragHandleProps}
             style={getItemStyle(
-              snapshot.isDragging,
+              snapshot.isDraggingOver,
               provided.draggableProps.style
             )}
+            className={style.card}
           >
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "space-around",
-              }}
-            >
+            <div>
               {item.content}
               {/* <button
               type="button"

@@ -4,11 +4,10 @@ import { Droppable } from "react-beautiful-dnd";
 import { DragnItemsList } from "../../Utils/countInArray";
 import s from "./DroppableElement.module.scss";
 
-const grid = 8;
-
 const getListStyle = (isDraggingOver) => ({
-  background: isDraggingOver ? "#c8ebf6a3" : "#ffffffa3",
-  padding: grid,
+  background: isDraggingOver
+    ? "rgb(246 204 167 / 58%)"
+    : "rgb(227 227 227 / 58%)",
 });
 
 type Props = {
@@ -28,7 +27,7 @@ export const DroppableElement: FC<Props> = React.memo(
             className={s.drop__element}
             {...provided.droppableProps}
           >
-            <input className={s.titleCol} defaultValue="ColName" />
+            {/* <input className={s.titleCol} defaultValue="ColName" /> */}
             {el.map((item, index) => (
               <DraggableCard
                 item={item}
