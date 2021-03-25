@@ -20,7 +20,6 @@ export const EditImageUpload = ({ id }) => {
   const openEdit = () => {
     setIsModalVisible(true);
   };
-
   function uploadImageCallBack(file) {
     return new Promise(async (resolve, reject) => {
       let staticImage;

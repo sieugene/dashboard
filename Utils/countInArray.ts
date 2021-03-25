@@ -29,8 +29,9 @@ export const generateItems = (
   offset: number = 0,
   childrens?: React.ReactNode[] & any
 ): DragnItemsList => {
+  const id = !!childrens?.props?.id ? childrens.props.id : uuidv4();
   return Array.from({ length: count }, (v, k) => k).map((k) => ({
-    id: uuidv4(),
+    id,
     content: (childrens && childrens[k]) ?? (childrens || ""),
     element: {
       type: childrens && (childrens.type?.name ?? childrens.type),

@@ -20,9 +20,9 @@ import isDeepEqual from "lodash.isequal";
 export const useDragnItems = (children: JSX.Element[]) => {
   const dispatch = useDispatch();
   const colsRaw = useSelector((state) => state.editors.cols);
-  const dragnItams = createDragnItems(colsRaw);
+  const dragnItems = createDragnItems(colsRaw);
   const [state, setState] = useState<DragnItemsList[]>(
-    dragnItams || childIterator(children)
+    dragnItems || childIterator(children)
   );
 
   const updateCols = (state: DragnItemsList[]) => {
