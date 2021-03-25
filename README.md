@@ -2,12 +2,11 @@
 
 Dashboard with dragndrop elements, includes text, image, video, charts.
 
-## Features (v0.1)
+## Features (v0.1.1)
 
 - Separate panel with elements.
-- Expanding the functionality on the principle of openness and closeness.
-- Saving the position of the columns and the content of the elements after a reboot.
-- Dragndrop elements of images, videos, charts
+- Saves the position of the columns and the contents of the elements.
+- Drag'n'drop elements of images, videos, charts.
 
 If you have any ideas about expanding the functionality or tips for improving it, write to me. Visit my website to 
 [contact me](https://sieugene.vercel.app/)
