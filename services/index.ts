@@ -12,11 +12,7 @@ export class Api {
   }
 
   editorsUpdate(data): Promise<AxiosResponse> {
-    return this.instance.post("/editors", data, {
-      // headers: {
-      //   "Content-Type": "application/x-www-form-urlencoded",
-      // },
-    });
+    return this.instance.post("/editors", data);
   }
 
   allEditors(): Promise<AxiosResponse<any>> {
@@ -26,12 +22,6 @@ export class Api {
   upload(formData: FormData): Promise<AxiosResponse<any>> {
     return this.instance.post<any>("/upload", formData, {
       headers: { "content-type": "multipart/form-data" },
-      onUploadProgress: (event) => {
-        console.log(
-          `Current progress:`,
-          Math.round((event.loaded * 100) / event.total)
-        );
-      },
     });
   }
 }

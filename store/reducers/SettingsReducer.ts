@@ -1,3 +1,4 @@
+import { toggleSaveProgress } from "./EditorReducer";
 import { service } from "./../../services/index";
 import throttle from "lodash.throttle";
 import { HYDRATE } from "next-redux-wrapper";
@@ -38,11 +39,15 @@ export const autoSave = () => (dispatch, getState) => {
   const INVOCATION_INTERVAL = 5000; // 0.1 sec
 
   // regular fn
-  const punchClock = function punchClock() {
-    const state = getState().editors;
-    service.editorsUpdate(state).then((data) => {
-      console.log("WAS UPDATED");
-    });
+  const punchClock = async () => {
+    try {
+      dispatch(toggleSaveProgress(true));
+      const state = getState().editors;
+      await service.editorsUpdate(state);
+    } catch (error) {
+    } finally {
+      dispatch(toggleSaveProgress(false));
+    }
   };
 
   // wrap it and supply interval representing minimum delay between invocations

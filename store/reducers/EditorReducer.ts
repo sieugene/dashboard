@@ -1,3 +1,5 @@
+import { AxiosResponse } from "axios";
+import { service } from "./../../services/index";
 import { EditorState, convertToRaw, convertFromRaw } from "draft-js";
 import { HYDRATE } from "next-redux-wrapper";
 
@@ -5,10 +7,14 @@ import { HYDRATE } from "next-redux-wrapper";
 export const UPDATE_EDITOR = "UPDATE_EDITOR";
 export const SET_COLS = "SET_COLS";
 export const SET_EDITORS = "SET_EDITORS";
+export const TOGGLE_LOAD = "TOGGLE_LOAD";
+export const TOGGLE_SAVE_PROGRESS = "TOGGLE_SAVE_PROGRESS";
 
 const initialState = {
   editors: {},
   cols: null,
+  load: true,
+  saveProgress: false,
 };
 
 const staticData: ChartData = [
@@ -63,6 +69,17 @@ export const EditorReducer = (state = initialState, action) => {
         ...state,
         cols: action.payload,
       };
+    case TOGGLE_LOAD:
+      return {
+        ...state,
+        load: action.payload,
+      };
+    case TOGGLE_SAVE_PROGRESS:
+      return {
+        ...state,
+        saveProgress: action.payload,
+      };
+
     default:
       return state;
   }
@@ -72,6 +89,20 @@ export const setEditors = (editors) => {
   return {
     type: SET_EDITORS,
     payload: editors,
+  };
+};
+
+export const toggleLoad = (load) => {
+  return {
+    type: TOGGLE_LOAD,
+    payload: load,
+  };
+};
+
+export const toggleSaveProgress = (load) => {
+  return {
+    type: TOGGLE_SAVE_PROGRESS,
+    payload: load,
   };
 };
 
@@ -139,6 +170,17 @@ export const setCols = (state) => (dispatch) => {
     type: SET_COLS,
     payload: cols,
   });
+};
+export const fetchData = () => async (dispatch) => {
+  try {
+    dispatch(toggleLoad(true));
+    const { data }: AxiosResponse<any> = await service.allEditors();
+    dispatch(setCols(data.cols));
+    dispatch(setEditors(data.editors));
+  } catch (error) {
+  } finally {
+    dispatch(toggleLoad(false));
+  }
 };
 // Selector
 export const getEditor = (state, id: string, type: EditorTypes) => {

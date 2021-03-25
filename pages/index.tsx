@@ -1,32 +1,29 @@
-import { Row } from "antd";
+import { Row, Spin } from "antd";
 import Head from "next/head";
-import { useState } from "react";
+import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { DragndropMultiple } from "../Components/DragndropWrapper";
+import { ProgressBar } from "../Components/ProgressBar/ProgressBar";
 import { Settings } from "../Components/Settings/Settings";
-import { service } from "../services";
-import { setCols, setEditors } from "../store/reducers/EditorReducer";
+import { useSelector } from "react-redux";
+import { fetchData } from "../store/reducers/EditorReducer";
 
 export default function Home() {
-  const [loading, setloading] = useState(true);
+  const loading = useSelector((state) => state.editors.load);
   const dispatch = useDispatch();
-  const getAll = () => {
-    service.allEditors().then(({ data }) => {
-      dispatch(setCols(data.cols));
-      dispatch(setEditors(data.editors));
-      setloading(false);
-    });
-  };
-  getAll();
+
+  useEffect(() => {
+    dispatch(fetchData());
+  }, []);
+
   return (
     <>
       <Head>
         <title>Create Next App</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      {/* <button onClick={addData}>call</button>
-      <button onClick={getAll}>get</button> */}
       <Settings />
+      <ProgressBar />
       <Row
         justify="center"
         style={{
@@ -34,11 +31,13 @@ export default function Home() {
           left: "250px",
         }}
       >
-        {process.browser && !loading && (
+        {process.browser && !loading ? (
           <DragndropMultiple>
             <></>
             <></>
           </DragndropMultiple>
+        ) : (
+          <Spin />
         )}
       </Row>
 
