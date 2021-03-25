@@ -43,8 +43,8 @@ export const EditChart: FC<Props> = ({ id }) => {
   return (
     <div
       style={{
-        width: "400px",
-        height: "400px",
+        width: "372",
+        height: "318px",
         position: "relative",
       }}
     >

@@ -11,7 +11,7 @@ import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import "draft-js/dist/Draft.css";
 import { useEditor } from "./useEditor";
 import { Popup } from "../Modal/Popup";
-import { Button } from "antd";
+import { dbclick } from "../../Utils/dbclick";
 
 export const EditText = ({ id }) => {
   const { editorState, setEditorState } = useEditor(id);
@@ -43,11 +43,9 @@ export const EditText = ({ id }) => {
         />
       </Popup>
       {!isModalVisible && (
-        <>
-          <Button onClick={openEdit}>Edit</Button>
+        <div onClick={(event) => dbclick(event, openEdit)}>
           <Editor
             editorState={editorState}
-            onEditorStateChange={setEditorState}
             toolbarClassName="rdw-storybook-toolbar"
             wrapperClassName="rdw-storybook-wrapper"
             editorClassName="rdw-storybook-editor"
@@ -62,7 +60,7 @@ export const EditText = ({ id }) => {
             toolbarHidden={true}
             readOnly={true}
           />
-        </>
+        </div>
       )}
     </div>
   );

@@ -9,7 +9,7 @@ const isBrowser = process.browser;
 
 let intervalId;
 const storageSessionMiddleware = (store) => (next) => (action) => {
-  if (action.type === "UPDATE_EDITOR") {
+  if (action.type === "UPDATE_EDITOR" || action.type === "SET_COLS") {
     intervalId && clearTimeout(intervalId);
     intervalId = store.dispatch(autoSave());
   }

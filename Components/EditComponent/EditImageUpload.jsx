@@ -12,7 +12,7 @@ import "draft-js/dist/Draft.css";
 import { useEditor } from "./useEditor";
 import { service } from "../../services";
 import { Popup } from "../Modal/Popup";
-import { Button } from "antd";
+import { dbclick } from "../../Utils/dbclick";
 
 export const EditImageUpload = ({ id }) => {
   const { editorState, setEditorState } = useEditor(id);
@@ -69,11 +69,9 @@ export const EditImageUpload = ({ id }) => {
         />
       </Popup>
       {!isModalVisible && (
-        <>
-          <Button onClick={openEdit}>Edit</Button>
+        <div onClick={(event) => dbclick(event, openEdit)}>
           <Editor
             editorState={editorState}
-            onEditorStateChange={setEditorState}
             toolbarClassName="rdw-storybook-toolbar"
             wrapperClassName="rdw-storybook-wrapper"
             editorClassName="rdw-storybook-editor"
@@ -89,7 +87,7 @@ export const EditImageUpload = ({ id }) => {
             toolbarHidden={true}
             readOnly={true}
           />
-        </>
+        </div>
       )}
     </div>
   );
