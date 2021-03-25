@@ -1,13 +1,11 @@
+.videoWrap {
+  position: relative;
+  padding-top: 14px;
+  padding-left: 8px;
+  padding-right: 8px;
+  padding-bottom: 8px;
+}
 .uploadContainer {
-  .video {
-    outline: none;
-    border: 1px solid black;
-    padding: 20px;
-    video {
-      outline: none;
-      cursor: pointer;
-    }
-  }
   .videoInput {
     position: absolute;
     left: 0;
@@ -15,6 +13,7 @@
     width: 100%;
     opacity: 0;
     cursor: pointer;
+    z-index: 1;
   }
   label {
     width: 100%;
@@ -43,5 +42,15 @@
   label {
     opacity: 0.2;
     cursor: none;
+  }
+}
+.video {
+  cursor: auto !important;
+  outline: none;
+  video {
+    outline: none;
+    cursor: pointer;
+    margin-bottom: 20px;
+    width: 100%;
   }
 }

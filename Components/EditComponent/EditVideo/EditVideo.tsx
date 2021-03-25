@@ -53,12 +53,9 @@ export const EditVideo = ({ id }) => {
     <h2>Video</h2>
       <video
       class="video-container video-container-overlay"
-      autoPlay="false"
-      loop="false"
       muted="true"
       data-reactid=".0.1.0.0"
-      controls="true"
-      style="width: 300px"
+      controls
     >
       <source type="video/mp4" data-reactid=".0.1.0.0.0" src="${url}" />
     </video>
@@ -67,7 +64,7 @@ export const EditVideo = ({ id }) => {
       `;
   };
   return (
-    <div style={{ position: "relative" }}>
+    <div className={style.videoWrap}>
       {!editorState && (
         <form className={`${style.uploadContainer} ${load ? style.load : ""}`}>
           <input
