@@ -1,16 +1,35 @@
+import { EditorsValue, EditorTypeValue } from "./../types/Editor/index";
+import { AppState } from "./index";
+import { DragnItemsList } from "./../../Utils/countInArray";
+// Actions
+import { toggleLoad, setEditors } from "../actions/Editor/index";
+// Types
+import {
+  UPDATE_EDITOR,
+  SET_EDITORS,
+  SET_COLS,
+  TOGGLE_LOAD,
+  TOGGLE_SAVE_PROGRESS,
+  editorActionsTypes,
+  ChartData,
+  EditorTypes,
+  Editors,
+} from "../types/Editor";
 import { AxiosResponse } from "axios";
 import { service } from "./../../services/index";
 import { EditorState, convertToRaw, convertFromRaw } from "draft-js";
 import { HYDRATE } from "next-redux-wrapper";
+import { ThunkAction } from "redux-thunk";
+import { AnyAction } from "redux";
 
-// Constants
-export const UPDATE_EDITOR = "UPDATE_EDITOR";
-export const SET_COLS = "SET_COLS";
-export const SET_EDITORS = "SET_EDITORS";
-export const TOGGLE_LOAD = "TOGGLE_LOAD";
-export const TOGGLE_SAVE_PROGRESS = "TOGGLE_SAVE_PROGRESS";
+export type EditorsState = {
+  editors: Editors | {};
+  cols: null | DragnItemsList[];
+  load: boolean;
+  saveProgress: boolean;
+};
 
-const initialState = {
+const initialState: EditorsState = {
   editors: {},
   cols: null,
   load: true,
@@ -40,14 +59,10 @@ const staticData: ChartData = [
   },
 ];
 
-// Types
-export type EditorTypes = "Editor" | "Video" | "Chart";
-export type ChartData = {
-  label: string;
-  data: number[][];
-}[];
-
-export const EditorReducer = (state = initialState, action) => {
+export const EditorReducer = (
+  state = initialState,
+  action: editorActionsTypes
+): EditorsState => {
   switch (action.type) {
     case HYDRATE:
       return { ...state, ...action.payload };
@@ -85,29 +100,8 @@ export const EditorReducer = (state = initialState, action) => {
   }
 };
 
-export const setEditors = (editors) => {
-  return {
-    type: SET_EDITORS,
-    payload: editors,
-  };
-};
-
-export const toggleLoad = (load) => {
-  return {
-    type: TOGGLE_LOAD,
-    payload: load,
-  };
-};
-
-export const toggleSaveProgress = (load) => {
-  return {
-    type: TOGGLE_SAVE_PROGRESS,
-    payload: load,
-  };
-};
-
 // Helpers
-const saveContentToStore = (id: string, content) => {
+const saveContentToStore = (id: string, content: EditorState) => {
   const JSContent = {
     ...content,
     id,
@@ -116,7 +110,7 @@ const saveContentToStore = (id: string, content) => {
   return JSContent;
 };
 
-export const readContentFromStore = (editor) => {
+export const readContentFromStore = (editor: EditorTypeValue) => {
   if (editor?.content) {
     const DBEditorState = convertFromRaw(JSON.parse(editor.content));
     const JsData = {
@@ -129,9 +123,11 @@ export const readContentFromStore = (editor) => {
   }
 };
 // Thunks
-export const updateEditor = (id: string, value, type: EditorTypes) => (
-  dispatch
-) => {
+export const updateEditor = (
+  id: string,
+  value: EditorsValue,
+  type: EditorTypes
+) => (dispatch) => {
   switch (type) {
     case "Editor":
       dispatch({
@@ -150,22 +146,29 @@ export const updateEditor = (id: string, value, type: EditorTypes) => (
   }
 };
 // Сохраняем элементы колонок и положения, для последующего сохранения и переобразования
-export const setCols = (state) => (dispatch) => {
+type SetColsThunk = ThunkAction<void, AppState, unknown, AnyAction>;
+export const setCols = (state: DragnItemsList[]): SetColsThunk => (
+  dispatch
+) => {
   const cols =
     state &&
-    Array.from(state).reduce((formattedCols: any, col: any) => {
-      const colElementsTotal = col?.reduce((colElements, el) => {
-        colElements.push({
-          element: el.element,
-          id: el.id,
-        });
-        return colElements;
-      }, []);
-      if (colElementsTotal && Array.isArray(colElementsTotal)) {
-        formattedCols.push(colElementsTotal);
-      }
-      return formattedCols;
-    }, []);
+    Array.from(state).reduce(
+      (formattedCols: DragnItemsList[], col: DragnItemsList) => {
+        const colElementsTotal = col?.reduce((colElements, el) => {
+          colElements.push({
+            element: el.element,
+            id: el.id,
+          });
+          return colElements;
+        }, []);
+        if (colElementsTotal && Array.isArray(colElementsTotal)) {
+          formattedCols.push(colElementsTotal);
+        }
+        return formattedCols;
+      },
+      []
+    );
+
   dispatch({
     type: SET_COLS,
     payload: cols,
@@ -183,7 +186,11 @@ export const fetchData = () => async (dispatch) => {
   }
 };
 // Selector
-export const getEditor = (state, id: string, type: EditorTypes) => {
+export const getEditor = (
+  state: AppState,
+  id: string,
+  type: EditorTypes
+): EditorsValue => {
   if (state.editors?.editors) {
     switch (type) {
       case "Editor":

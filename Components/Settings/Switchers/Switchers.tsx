@@ -1,10 +1,8 @@
 import { Switch } from "antd";
 import React, { FC } from "react";
 import { useDispatch } from "react-redux";
-import {
-  fieldToggle,
-  updateToggle,
-} from "../../../store/reducers/SettingsReducer";
+import { updateToggle } from "../../../store/actions/Settings";
+import { fieldToggle } from "../../../store/reducers/SettingsReducer";
 import style from "./Switchers.module.scss";
 import { useSwitchers } from "./useSwitchers";
 

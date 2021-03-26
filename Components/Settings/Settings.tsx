@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 import style from "./Settings.module.scss";
 import { Switchers } from "./Switchers/Switchers";
 import { useSelector } from "react-redux";
-import { forceSaveAction } from "../../store/reducers/SettingsReducer";
+import { forceSaveAction } from "../../store/actions/Settings";
 
 export const Settings: React.FC = () => {
   const saveProgress = useSelector((state) => state.editors.saveProgress);

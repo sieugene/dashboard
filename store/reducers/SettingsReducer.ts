@@ -1,10 +1,8 @@
-import { toggleSaveProgress } from "./EditorReducer";
+import { SettingsActionsTypes, UPDATE_TOGGLE } from "./../types/Settings/index";
+import { toggleSaveProgress } from "./../actions/Editor/index";
 import { service } from "./../../services/index";
 import throttle from "lodash.throttle";
 import { HYDRATE } from "next-redux-wrapper";
-
-export const UPDATE_TOGGLE = "UPDATE_TOGGLE";
-export const FORCE_SAVE = "FORCE_SAVE";
 
 const initialState = {
   autoSave: true,
@@ -12,9 +10,14 @@ const initialState = {
   localstorage: false,
 };
 
+export type SettingsState = typeof initialState;
+
 export type fieldToggle = "autoSave" | "progressBar" | "localstorage";
 
-export const SettingsReducer = (state = initialState, action) => {
+export const SettingsReducer = (
+  state = initialState,
+  action: SettingsActionsTypes
+): SettingsState => {
   switch (action.type) {
     case HYDRATE:
       return { ...state, ...action.payload };
@@ -26,19 +29,6 @@ export const SettingsReducer = (state = initialState, action) => {
     default:
       return state;
   }
-};
-
-export const forceSaveAction = () => {
-  return {
-    type: FORCE_SAVE,
-  };
-};
-
-export const updateToggle = (field: fieldToggle, toggle: Boolean) => {
-  return {
-    type: UPDATE_TOGGLE,
-    payload: { field, toggle },
-  };
 };
 
 export const save = () => async (dispatch, getState) => {

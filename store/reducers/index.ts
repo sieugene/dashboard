@@ -9,3 +9,4 @@ export const rootReducer = combineReducers({
   editors,
   settings,
 });
+export type AppState = ReturnType<typeof rootReducer>;
