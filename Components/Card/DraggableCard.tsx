@@ -3,12 +3,14 @@ import { Draggable } from "react-beautiful-dnd";
 import { DragnItem } from "../../Utils/countInArray";
 import style from "./DraggableCard.module.scss";
 
-const getItemStyle = (isDraggingOver, draggableStyle) => ({
-  padding: 8,
-  // cursor: isDraggingOver ? "drag" : "auto",
-  background: isDraggingOver ? "lightgreen" : "white",
-  ...draggableStyle,
-});
+const getItemStyle = (isDraggingOver, draggableStyle, isDragging) => {
+  return {
+    padding: 8,
+    // cursor: isDraggingOver ? "drag" : "auto",
+    background: isDragging ? "lightgreen" : "white",
+    ...draggableStyle,
+  };
+};
 
 type Props = {
   deleteItem: (ind: number, index: number) => void;
@@ -28,12 +30,13 @@ export const DraggableCard: FC<Props> = React.memo(
             {...provided.dragHandleProps}
             style={getItemStyle(
               snapshot.isDraggingOver,
-              provided.draggableProps.style
+              provided.draggableProps.style,
+              snapshot.isDragging
             )}
             className={style.card}
           >
             <div>
-              {item.content}
+              {!snapshot.isDragging ? item.content : "перемещаем"}
               {/* <button
               type="button"
               onClick={() => {
