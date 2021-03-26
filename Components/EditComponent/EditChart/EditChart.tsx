@@ -19,6 +19,7 @@ type Props = {
 
 export const EditChart: FC<Props> = ({ id }) => {
   const { editorState, setEditorState }: UseEditor = useEditor(id, "Chart");
+
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
   const data = React.useMemo(() => editorState, [editorState]);
   const axes = React.useMemo(
@@ -28,13 +29,14 @@ export const EditChart: FC<Props> = ({ id }) => {
     ],
     []
   );
+
   const series = React.useMemo(
     () => ({
       showPoints: true,
     }),
     []
   );
-  const getLabel = React.useCallback((series) => series.label, []);
+  const getLabel = React.useCallback((series) => series?.label ?? "", []);
 
   const openEdit = () => {
     setIsModalVisible(true);

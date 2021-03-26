@@ -12,6 +12,7 @@ import { useDispatch } from "react-redux";
 import memoizeOne from "memoize-one";
 import isDeepEqual from "lodash.isequal";
 import { ElementCreator } from "./../../ElementCreator/ElementCreator";
+import { v4 as uuidv4 } from "uuid";
 
 export const useDragnItems = (children: JSX.Element[]) => {
   const dispatch = useDispatch();
@@ -50,14 +51,14 @@ const createDragnItems = (colsRaw: DragnItemsRawList[]): DragnItemsList[] => {
   }
 };
 const createElement = (el: DragnItemRaw): DragnItem => {
-  const id = el.id ?? "";
+  const id = el.id ?? uuidv4();
   if (el.element?.type) {
     const create = ElementCreator(el.element.type, id);
     return {
       ...el,
       content: create
         ? create.content
-        : React.createElement(el.element.type, [el.element.props]),
+        : React.createElement(el.element.type, { key: id }),
     };
   }
 };

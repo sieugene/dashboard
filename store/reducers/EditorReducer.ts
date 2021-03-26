@@ -177,8 +177,10 @@ export const fetchData = () => async (dispatch) => {
   try {
     dispatch(toggleLoad(true));
     const { data } = await service.allEditors();
-    dispatch(setCols(data.cols));
-    dispatch(setEditors(data.editors));
+    if (data?.cols && data?.editors) {
+      dispatch(setCols(data.cols));
+      dispatch(setEditors(data.editors));
+    }
   } catch (error) {
   } finally {
     dispatch(toggleLoad(false));
