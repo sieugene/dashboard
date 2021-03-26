@@ -1,5 +1,17 @@
+import { DragnItemsList } from "./../Utils/countInArray";
 import axios, { AxiosInstance, AxiosResponse } from "axios";
+import { Editors } from "../store/types/Editor";
 
+type AllEditorsData = {
+  cols: DragnItemsList[] | null;
+  editors: Editors | {};
+};
+type UploadData = {
+  link: string;
+};
+
+export type AllEditorsResponse = Promise<AxiosResponse<AllEditorsData>>;
+export type UploadResponse = Promise<AxiosResponse<UploadData>>;
 export class Api {
   public baseUrl: string;
   public instance: AxiosInstance;
@@ -11,16 +23,19 @@ export class Api {
     });
   }
 
-  editorsUpdate(data): Promise<AxiosResponse> {
+  editorsUpdate(data: {
+    cols: DragnItemsList[];
+    editors: {} | Editors;
+  }): Promise<AxiosResponse> {
     return this.instance.post("/editors", data);
   }
 
-  allEditors(): Promise<AxiosResponse<any>> {
-    return this.instance.get<any>("/editors");
+  allEditors(): AllEditorsResponse {
+    return this.instance.get<AllEditorsData>("/editors");
   }
 
-  upload(formData: FormData): Promise<AxiosResponse<any>> {
-    return this.instance.post<any>("/upload", formData, {
+  upload(formData: FormData): UploadResponse {
+    return this.instance.post<UploadData>("/upload", formData, {
       headers: { "content-type": "multipart/form-data" },
     });
   }

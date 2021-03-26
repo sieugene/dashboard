@@ -12,14 +12,14 @@ export type DragnItem = {
   content: React.ReactNode;
   element: {
     type: string;
-    props: any;
+    props: unknown;
   };
 };
 export type DragnItemRaw = {
   id: string;
   element: {
     type: string;
-    props: any;
+    props: unknown;
   };
 };
 export type DragnItemsRawList = DragnItemRaw[];

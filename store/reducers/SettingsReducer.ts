@@ -1,8 +1,11 @@
+import { AnyAction } from "redux";
+import { AppState } from "./index";
 import { SettingsActionsTypes, UPDATE_TOGGLE } from "./../types/Settings/index";
 import { toggleSaveProgress } from "./../actions/Editor/index";
 import { service } from "./../../services/index";
 import throttle from "lodash.throttle";
 import { HYDRATE } from "next-redux-wrapper";
+import { ThunkAction } from "redux-thunk";
 
 const initialState = {
   autoSave: true,
@@ -31,10 +34,14 @@ export const SettingsReducer = (
   }
 };
 
-export const save = () => async (dispatch, getState) => {
+type SaveThunk = ThunkAction<void, AppState, unknown, AnyAction>;
+export const save = (): SaveThunk => async (dispatch, getState) => {
   try {
     dispatch(toggleSaveProgress(true));
-    const state = getState().editors;
+    const state = {
+      cols: getState().editors.cols,
+      editors: getState().editors.editors,
+    };
     await service.editorsUpdate(state);
   } catch (error) {
   } finally {

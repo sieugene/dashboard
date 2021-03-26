@@ -1,10 +1,9 @@
 import { DragnItemsList } from "./../../../Utils/countInArray";
-import { EditorState } from "draft-js";
 import { HydrateNextActionType } from "./../index";
 export const UPDATE_EDITOR = "UPDATE_EDITOR";
 export type updateEditorType = {
   type: typeof UPDATE_EDITOR;
-  payload: any;
+  payload: { id: string; data: EditorsValue };
 };
 export const SET_COLS = "SET_COLS";
 export type setColsType = {

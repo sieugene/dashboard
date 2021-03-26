@@ -1,3 +1,4 @@
+import { service } from "./../../services/index";
 import { EditorsValue, EditorTypeValue } from "./../types/Editor/index";
 import { AppState } from "./index";
 import { DragnItemsList } from "./../../Utils/countInArray";
@@ -15,8 +16,6 @@ import {
   EditorTypes,
   Editors,
 } from "../types/Editor";
-import { AxiosResponse } from "axios";
-import { service } from "./../../services/index";
 import { EditorState, convertToRaw, convertFromRaw } from "draft-js";
 import { HYDRATE } from "next-redux-wrapper";
 import { ThunkAction } from "redux-thunk";
@@ -177,7 +176,7 @@ export const setCols = (state: DragnItemsList[]): SetColsThunk => (
 export const fetchData = () => async (dispatch) => {
   try {
     dispatch(toggleLoad(true));
-    const { data }: AxiosResponse<any> = await service.allEditors();
+    const { data } = await service.allEditors();
     dispatch(setCols(data.cols));
     dispatch(setEditors(data.editors));
   } catch (error) {
