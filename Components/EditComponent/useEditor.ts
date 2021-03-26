@@ -1,20 +1,21 @@
-import {
-  EditorTypes,
-  getEditor,
-  updateEditor,
-} from "./../../store/reducers/EditorReducer";
+import { EditorsValue } from "./../../store/types/Editor/index";
+import { AppState } from "./../../store/reducers/index";
+import { getEditor, updateEditor } from "./../../store/reducers/EditorReducer";
 import { useSelector, useDispatch } from "react-redux";
 import { useState } from "react";
 import memoizeOne from "memoize-one";
+import { EditorTypes } from "../../store/types/Editor";
 
 export const useEditor = (id: string, type: EditorTypes = "Editor") => {
-  const editor = useSelector(memoizeOne((state) => getEditor(state, id, type)));
+  const editor = useSelector<AppState, EditorsValue>(
+    memoizeOne((state) => getEditor(state, id, type))
+  );
 
   // Local value for fast update text
-  const [localValue, setlocalValue] = useState(editor);
+  const [localValue, setlocalValue] = useState<EditorsValue>(editor);
   const dispatch = useDispatch();
 
-  const setEditorState = memoizeOne((content) => {
+  const setEditorState = memoizeOne((content: EditorsValue) => {
     setlocalValue(content);
     // in macro task
     setTimeout(() => {

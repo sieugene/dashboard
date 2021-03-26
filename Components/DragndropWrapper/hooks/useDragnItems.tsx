@@ -8,14 +8,14 @@ import {
   DragnItem,
   generateItems,
 } from "../../../Utils/countInArray";
-import { EditText } from "../../EditComponent/EditText";
-import { EditImageUpload } from "../../EditComponent/EditImageUpload";
-import { EditVideo } from "../../EditComponent/EditVideo/EditVideo";
-import { EditChart } from "../../EditComponent/EditChart/EditChart";
 import { setCols } from "../../../store/reducers/EditorReducer";
 import { useDispatch } from "react-redux";
 import memoizeOne from "memoize-one";
 import isDeepEqual from "lodash.isequal";
+import { EditText } from "../../EditComponent/EditText/EditText";
+import { EditImageUpload } from "../../EditComponent/EditImageUpload/EditImageUpload";
+import { EditVideo } from "../../EditComponent/EditVideo/EditVideo";
+import { EditChart } from "../../EditComponent/EditChart/EditChart";
 
 export const useDragnItems = (children: JSX.Element[]) => {
   const dispatch = useDispatch();

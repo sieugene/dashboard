@@ -2,16 +2,16 @@
 
 import React, { useState } from "react";
 import dynamic from "next/dynamic";
-const Editor = dynamic(
+const Editor: React.ComponentType<any> = dynamic(
   () => import("react-draft-wysiwyg").then((mod) => mod.Editor),
   { ssr: false }
 );
 
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import "draft-js/dist/Draft.css";
-import { useEditor } from "./useEditor";
-import { Popup } from "../Modal/Popup";
-import { dbclick } from "../../Utils/dbclick";
+import { useEditor } from "../useEditor";
+import { Popup } from "../../Modal/Popup";
+import { dbclick } from "../../../Utils/dbclick";
 
 export const EditText = ({ id }) => {
   const { editorState, setEditorState } = useEditor(id);

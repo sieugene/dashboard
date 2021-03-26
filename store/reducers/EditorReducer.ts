@@ -131,7 +131,7 @@ export const updateEditor = (
     case "Editor":
       dispatch({
         type: UPDATE_EDITOR,
-        payload: { id, data: saveContentToStore(id, value) },
+        payload: { id, data: saveContentToStore(id, value as EditorTypeValue) },
       });
       break;
     case "Video":

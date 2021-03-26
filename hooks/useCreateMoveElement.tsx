@@ -1,6 +1,6 @@
 import { EditChart } from "../Components/EditComponent/EditChart/EditChart";
-import { EditImageUpload } from "../Components/EditComponent/EditImageUpload";
-import { EditText } from "../Components/EditComponent/EditText";
+import { EditImageUpload } from "../Components/EditComponent/EditImageUpload/EditImageUpload";
+import { EditText } from "../Components/EditComponent/EditText/EditText";
 import { EditVideo } from "../Components/EditComponent/EditVideo/EditVideo";
 import { DragnItemsList, generateItems } from "../Utils/countInArray";
 

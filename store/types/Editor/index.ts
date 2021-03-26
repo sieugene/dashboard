@@ -1,3 +1,4 @@
+import { EditorState } from "draft-js";
 import { DragnItemsList } from "./../../../Utils/countInArray";
 import { HydrateNextActionType } from "./../index";
 export const UPDATE_EDITOR = "UPDATE_EDITOR";
@@ -27,12 +28,12 @@ export type toggleSaveProgressType = {
 };
 
 export type EditorTypes = "Editor" | "Video" | "Chart";
-export type EditorTypeValue = { EditorState; id: string; content: string };
+export type EditorTypeValue = EditorState & { id: string; content: string };
 export type ChartData = {
   label: string;
   data: number[][];
 }[];
-export type EditorsValue = string | ChartData | EditorTypeValue;
+export type EditorsValue = string | ChartData | EditorTypeValue | EditorState;
 export type Editors = {
   [key: string]: EditorsValue;
 };

@@ -2,14 +2,14 @@ import { EditOutlined } from "@ant-design/icons";
 import { Col, Row } from "antd";
 import React, { FC, useState } from "react";
 import { Chart } from "react-charts";
-import { ChartData } from "../../../store/reducers/EditorReducer";
+import { ChartData, EditorsValue } from "../../../store/types/Editor";
 import { ChartInput } from "../../ChartInput/ChartInput";
 import { Popup } from "../../Modal/Popup";
 import { useEditor } from "../useEditor";
 import style from "./EditChart.module.scss";
 
 type UseEditor = {
-  editorState: ChartData;
+  editorState: EditorsValue;
   setEditorState: (content: ChartData) => void;
 };
 
@@ -65,7 +65,10 @@ export const EditChart: FC<Props> = ({ id }) => {
             />
           </Col>
           <Col xs={24} sm={24} md={10} lg={10} xl={10} className={style.col}>
-            <ChartInput value={data} setChartData={setEditorState} />
+            <ChartInput
+              value={data as ChartData}
+              setChartData={setEditorState}
+            />
           </Col>
         </Row>
       </Popup>

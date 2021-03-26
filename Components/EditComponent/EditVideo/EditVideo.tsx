@@ -86,7 +86,7 @@ export const EditVideo = ({ id }) => {
       {editorState && (
         <ContentEditable
           innerRef={contentEditable}
-          html={editorState}
+          html={editorState as string}
           disabled={false}
           onChange={handleChange}
           tagName="div"
