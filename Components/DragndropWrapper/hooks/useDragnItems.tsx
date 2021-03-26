@@ -6,16 +6,12 @@ import {
   DragnItemsRawList,
   DragnItemRaw,
   DragnItem,
-  generateItems,
 } from "../../../Utils/countInArray";
 import { setCols } from "../../../store/reducers/EditorReducer";
 import { useDispatch } from "react-redux";
 import memoizeOne from "memoize-one";
 import isDeepEqual from "lodash.isequal";
-import { EditText } from "../../EditComponent/EditText/EditText";
-import { EditImageUpload } from "../../EditComponent/EditImageUpload/EditImageUpload";
-import { EditVideo } from "../../EditComponent/EditVideo/EditVideo";
-import { EditChart } from "../../EditComponent/EditChart/EditChart";
+import { ElementCreator } from "./../../ElementCreator/ElementCreator";
 
 export const useDragnItems = (children: JSX.Element[]) => {
   const dispatch = useDispatch();
@@ -55,29 +51,12 @@ const createDragnItems = (colsRaw: DragnItemsRawList[]): DragnItemsList[] => {
 };
 const createElement = (el: DragnItemRaw): DragnItem => {
   const id = el.id ?? "";
-  const elements = {
-    EditText: {
-      content: <EditText id={id} />,
-    },
-    EditImageUpload: {
-      content: <EditImageUpload id={id} />,
-    },
-    ADD_LAYOUT: {
-      extend: generateItems(1),
-    },
-    EditVideo: {
-      content: <EditVideo id={id} />,
-    },
-    EditChart: {
-      content: <EditChart id={id} />,
-    },
-  };
   if (el.element?.type) {
-    const condition = elements[el.element.type];
+    const create = ElementCreator(el.element.type, id);
     return {
       ...el,
-      content: condition
-        ? elements[el.element.type].content
+      content: create
+        ? create.content
         : React.createElement(el.element.type, [el.element.props]),
     };
   }
