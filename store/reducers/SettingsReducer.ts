@@ -4,6 +4,7 @@ import throttle from "lodash.throttle";
 import { HYDRATE } from "next-redux-wrapper";
 
 export const UPDATE_TOGGLE = "UPDATE_TOGGLE";
+export const FORCE_SAVE = "FORCE_SAVE";
 
 const initialState = {
   autoSave: true,
@@ -27,6 +28,12 @@ export const SettingsReducer = (state = initialState, action) => {
   }
 };
 
+export const forceSaveAction = () => {
+  return {
+    type: FORCE_SAVE,
+  };
+};
+
 export const updateToggle = (field: fieldToggle, toggle: Boolean) => {
   return {
     type: UPDATE_TOGGLE,
@@ -34,27 +41,30 @@ export const updateToggle = (field: fieldToggle, toggle: Boolean) => {
   };
 };
 
-export const autoSave = () => (dispatch, getState) => {
-  const THROTTLE_INTERVAL = 5000; // <= adjust this number to see throttling in action
-  const INVOCATION_INTERVAL = 5000; // 0.1 sec
+export const save = () => async (dispatch, getState) => {
+  try {
+    dispatch(toggleSaveProgress(true));
+    const state = getState().editors;
+    await service.editorsUpdate(state);
+  } catch (error) {
+  } finally {
+    dispatch(toggleSaveProgress(false));
+  }
+};
 
-  // regular fn
-  const punchClock = async () => {
-    try {
-      dispatch(toggleSaveProgress(true));
-      const state = getState().editors;
-      await service.editorsUpdate(state);
-    } catch (error) {
-    } finally {
-      dispatch(toggleSaveProgress(false));
+export const autoSave = () => (dispatch, getState) => {
+  const THROTTLE_TIMEOUT = 5000; // <= adjust this number to see throttling in action
+  const INVOCATION_TIMEOUT = 5000;
+  const doSave = async () => {
+    const autoSave = getState().settings.autoSave;
+    if (autoSave) {
+      await dispatch(save());
     }
   };
 
-  // wrap it and supply interval representing minimum delay between invocations
-  const throttledPunchClock = throttle(punchClock, THROTTLE_INTERVAL);
+  const throttledPunchClock = throttle(doSave, THROTTLE_TIMEOUT);
 
-  // set up looping
-  const intervalId = setTimeout(throttledPunchClock, INVOCATION_INTERVAL);
+  const intervalId = setTimeout(throttledPunchClock, INVOCATION_TIMEOUT);
 
   return intervalId;
 };

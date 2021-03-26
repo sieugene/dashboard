@@ -4,6 +4,7 @@ export const useSwitchers = () => {
   const { autoSave, progressBar, localstorage } = useSelector(
     (state) => state.settings
   );
+  const saveProgress = useSelector((state) => state.editors.saveProgress);
 
-  return { autoSave, progressBar, localstorage };
+  return { autoSave, progressBar, localstorage, load: saveProgress };
 };

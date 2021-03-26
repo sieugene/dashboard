@@ -8,6 +8,7 @@ let interval;
 export const ProgressBar = () => {
   const [percent, setPercent] = useState(0);
   const saveProgress = useSelector((state) => state.editors.saveProgress);
+  const progressBar = useSelector((state) => state.settings.progressBar);
   const timer = (timeout, percent) => {
     let nextPercent = percent;
     interval = setInterval(() => {
@@ -27,11 +28,15 @@ export const ProgressBar = () => {
     };
   }, [saveProgress]);
   return (
-    <div
-      className={style.progressWrap}
-      style={{ opacity: percent === 100 ? 0 : 1 }}
-    >
-      <Progress percent={percent} />
-    </div>
+    <>
+      {progressBar && (
+        <div
+          className={style.progressWrap}
+          style={{ opacity: percent === 100 ? 0 : 1 }}
+        >
+          <Progress percent={percent} />
+        </div>
+      )}
+    </>
   );
 };
