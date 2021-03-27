@@ -1,13 +1,18 @@
 /* @flow */
 
 import { CloudUploadOutlined } from "@ant-design/icons";
-import React, { useRef, useState } from "react";
+import React, { FC, useRef, useState } from "react";
 import ContentEditable from "react-contenteditable";
 import { service } from "../../../services";
 import { useEditor } from "../useEditor";
 import style from "./EditVideo.module.scss";
 
-export const EditVideo = ({ id }) => {
+type Props = {
+  id: string;
+  type?: string;
+};
+
+export const EditVideo: FC<Props> = ({ id }) => {
   const { editorState, setEditorState } = useEditor(id, "Video");
   const input = useRef();
   const [load, setload] = useState(false);
@@ -32,15 +37,24 @@ export const EditVideo = ({ id }) => {
 
         const fd = new FormData();
         fd.append("file", file, file.name);
-        try {
-          const { data } = await service.upload(fd);
-          if (data?.link) {
-            resolve(data.link);
+
+        if (process.env.NODE_ENV === "development") {
+          try {
+            const { data } = await service.upload(fd);
+            if (data?.link) {
+              resolve(data.link);
+            }
+          } catch (error) {
+          } finally {
+            setload(false);
+            videoUrl = null;
           }
-        } catch (error) {
-          videoUrl = null;
-        } finally {
-          setload(false);
+        } else {
+          setTimeout(() => {
+            setload(false);
+            resolve(videoUrl);
+            videoUrl = null;
+          }, 1500);
         }
       });
       result && setEditorState(createVideoTag(result));

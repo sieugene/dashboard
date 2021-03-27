@@ -1,6 +1,6 @@
 /* @flow */
 
-import React, { useState } from "react";
+import React, { FC, useState } from "react";
 import dynamic from "next/dynamic";
 const Editor: React.ComponentType<any> = dynamic(
   () => import("react-draft-wysiwyg").then((mod) => mod.Editor),
@@ -13,8 +13,12 @@ import { useEditor } from "../useEditor";
 import { service } from "../../../services";
 import { Popup } from "../../Modal/Popup";
 import { dbclick } from "../../../Utils/dbclick";
+type Props = {
+  id: string;
+  type?: string;
+};
 
-export const EditImageUpload = ({ id }) => {
+export const EditImageUpload: FC<Props> = ({ id }) => {
   const {
     editorState,
     setEditorState,
@@ -27,24 +31,22 @@ export const EditImageUpload = ({ id }) => {
   };
   function uploadImageCallBack(file) {
     return new Promise(async (resolve, reject) => {
-      let staticImage;
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        staticImage = { data: { link: e.target.result } };
-      };
-      reader.onerror = (e) => reject(e);
-      reader.readAsDataURL(file);
-
-      const fd = new FormData();
-      fd.append("file", file, file.name);
-      try {
-        const { data } = await service.upload(fd);
-        if (data?.link) {
-          resolve({ data: { link: data.link } });
-        }
-      } catch (error) {
-        resolve(staticImage);
-        staticImage = null;
+      if (process.env.NODE_ENV === "development") {
+        const fd = new FormData();
+        fd.append("file", file, file.name);
+        try {
+          const { data } = await service.upload(fd);
+          if (data?.link) {
+            resolve({ data: { link: data.link } });
+          }
+        } catch (error) {}
+      } else {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          resolve({ data: { link: e.target.result } });
+        };
+        reader.onerror = (e) => reject(e);
+        reader.readAsDataURL(file);
       }
     });
   }

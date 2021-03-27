@@ -18,6 +18,7 @@ type UseEditor = {
 
 type Props = {
   id: string;
+  type?: string
 };
 
 export const EditChart: FC<Props> = ({ id }) => {

@@ -1,6 +1,6 @@
 /* @flow */
 
-import React from "react";
+import React, { FC } from "react";
 import dynamic from "next/dynamic";
 const Editor: React.ComponentType<any> = dynamic(
   () => import("react-draft-wysiwyg").then((mod) => mod.Editor),
@@ -13,7 +13,12 @@ import { useEditor } from "../useEditor";
 import { Popup } from "../../Modal/Popup";
 import { dbclick } from "../../../Utils/dbclick";
 
-export const EditText = ({ id }) => {
+type Props = {
+  id: string;
+  type?: string;
+};
+
+export const EditText: FC<Props> = ({ id }) => {
   const {
     editorState,
     setEditorState,

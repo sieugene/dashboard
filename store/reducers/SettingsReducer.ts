@@ -36,16 +36,23 @@ export const SettingsReducer = (
 
 type SaveThunk = ThunkAction<void, AppState, unknown, AnyAction>;
 export const save = (): SaveThunk => async (dispatch, getState) => {
-  try {
+  if (process.env.NODE_ENV === "development") {
+    try {
+      dispatch(toggleSaveProgress(true));
+      const state = {
+        cols: getState().editors.cols,
+        editors: getState().editors.editors,
+      };
+      await service.editorsUpdate(state);
+    } catch (error) {
+    } finally {
+      dispatch(toggleSaveProgress(false));
+    }
+  } else {
     dispatch(toggleSaveProgress(true));
-    const state = {
-      cols: getState().editors.cols,
-      editors: getState().editors.editors,
-    };
-    await service.editorsUpdate(state);
-  } catch (error) {
-  } finally {
-    dispatch(toggleSaveProgress(false));
+    setTimeout(() => {
+      dispatch(toggleSaveProgress(false));
+    }, 1500);
   }
 };
 

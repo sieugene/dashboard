@@ -38,8 +38,8 @@ export default function Home() {
       >
         {process.browser && !loading ? (
           <DragndropMultiple>
-            <></>
-            <></>
+            <div></div>
+            <div></div>
           </DragndropMultiple>
         ) : (
           <Loader />

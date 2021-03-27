@@ -17,7 +17,7 @@ export class Api {
   public instance: AxiosInstance;
 
   constructor() {
-    this.baseUrl = "http://localhost:3000/api";
+    this.baseUrl = process.env.NODE_ENV === "development" ? "http://localhost:3000/api" : "/api";
     this.instance = axios.create({
       baseURL: this.baseUrl,
     });

@@ -10,19 +10,19 @@ export const ElementCreator = (type: string, id: string) => {
     case "TEXT__ELEMENT":
     case "EditText":
       return {
-        content: <EditText id={id} />,
+        content: <EditText id={id} type={"EditText"} />,
         id,
       };
     case "EDITOR_IMAGE":
     case "EditImageUpload":
       return {
-        content: <EditImageUpload id={id} />,
+        content: <EditImageUpload id={id} type={"EditImageUpload"} />,
         id,
       };
     case "EDITOR_IMAGE":
     case "EditImageUpload":
       return {
-        content: <EditImageUpload id={id} />,
+        content: <EditImageUpload id={id} type={"EditImageUpload"} />,
         id,
       };
     case "ADD_LAYOUT":
@@ -32,13 +32,13 @@ export const ElementCreator = (type: string, id: string) => {
     case "VIDEO":
     case "EditVideo":
       return {
-        content: <EditVideo id={id} />,
+        content: <EditVideo id={id} type={"EditVideo"} />,
         id,
       };
     case "CHART":
     case "EditChart":
       return {
-        content: <EditChart id={id} />,
+        content: <EditChart id={id} type={"EditChart"} />,
         id,
       };
     default:
