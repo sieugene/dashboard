@@ -1,4 +1,5 @@
 import {
+  DELETE_ITEM,
   editorActionsTypes,
   Editors,
   SET_EDITORS,
@@ -24,5 +25,12 @@ export const toggleSaveProgress = (load: boolean): editorActionsTypes => {
   return {
     type: TOGGLE_SAVE_PROGRESS,
     payload: load,
+  };
+};
+
+export const deleteItem = (id: string): editorActionsTypes => {
+  return {
+    type: DELETE_ITEM,
+    payload: id,
   };
 };

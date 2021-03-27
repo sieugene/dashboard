@@ -1,5 +1,9 @@
 import { service } from "./../../services/index";
-import { EditorsValue, EditorTypeValue } from "./../types/Editor/index";
+import {
+  DELETE_ITEM,
+  EditorsValue,
+  EditorTypeValue,
+} from "./../types/Editor/index";
 import { AppState } from "./index";
 import { DragnItemsList } from "./../../Utils/countInArray";
 // Actions
@@ -88,6 +92,12 @@ export const EditorReducer = (
         ...state,
         load: action.payload,
       };
+    case DELETE_ITEM: {
+      return {
+        ...state,
+        cols: deleteItemById(state.cols, action.payload),
+      };
+    }
     case TOGGLE_SAVE_PROGRESS:
       return {
         ...state,
@@ -108,7 +118,6 @@ const saveContentToStore = (id: string, content: EditorState) => {
   };
   return JSContent;
 };
-
 export const readContentFromStore = (editor: EditorTypeValue) => {
   if (editor?.content) {
     const DBEditorState = convertFromRaw(JSON.parse(editor.content));
@@ -120,6 +129,19 @@ export const readContentFromStore = (editor: EditorTypeValue) => {
   } else {
     return EditorState.createEmpty();
   }
+};
+export const deleteItemById = (
+  cols: null | DragnItemsList[],
+  id: string
+): DragnItemsList[] | null => {
+  if (cols?.length && id) {
+    return Array.from(cols).reduce((approvedCols: DragnItemsList[], col) => {
+      const clearedCol = col.filter((col) => col.id !== id);
+      approvedCols.push(clearedCol);
+      return approvedCols;
+    }, []);
+  }
+  return cols;
 };
 // Thunks
 export const updateEditor = (

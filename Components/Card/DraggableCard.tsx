@@ -1,6 +1,7 @@
 import React, { FC } from "react";
 import { Draggable } from "react-beautiful-dnd";
 import { DragnItem } from "../../Utils/countInArray";
+import { DropdownItem } from "../DropdownItem/DropdownItem";
 import style from "./DraggableCard.module.scss";
 
 const getItemStyle = (isDraggingOver, draggableStyle, isDragging) => {
@@ -13,14 +14,14 @@ const getItemStyle = (isDraggingOver, draggableStyle, isDragging) => {
 };
 
 type Props = {
-  deleteItem: (ind: number, index: number) => void;
+  deleteItem: (ind: number, index: number, id?: string) => void;
   index: number;
   ind: number;
   item: DragnItem;
 };
 
 export const DraggableCard: FC<Props> = React.memo(
-  ({ item, index, deleteItem, ind }) => {
+  ({ item, index, ind, deleteItem }) => {
     return (
       <Draggable draggableId={item.id} index={index}>
         {(provided, snapshot) => (
@@ -35,17 +36,18 @@ export const DraggableCard: FC<Props> = React.memo(
             )}
             className={style.card}
           >
-            <div>
-              {!snapshot.isDragging ? item.content : "перемещаем"}
-              {/* <button
-              type="button"
-              onClick={() => {
-                deleteItem(ind, index);
-              }}
-            >
-              delete
-            </button> */}
-            </div>
+            <DropdownItem className={style.left}>
+              <div className={style.danger}>edit</div>
+              <div
+                className={style.danger}
+                onClick={() => {
+                  deleteItem(ind, index, item.id);
+                }}
+              >
+                delete item
+              </div>
+            </DropdownItem>
+            <div>{!snapshot.isDragging ? item.content : "перемещаем"}</div>
           </div>
         )}
       </Draggable>

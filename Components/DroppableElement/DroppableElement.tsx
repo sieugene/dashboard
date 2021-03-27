@@ -13,7 +13,7 @@ const getListStyle = (isDraggingOver) => ({
 type Props = {
   ind: number;
   el: DragnItemsList;
-  deleteItem: (ind: number, index: number) => void;
+  deleteItem: (ind: number, index: number, id?: string) => void;
 };
 
 export const DroppableElement: FC<Props> = React.memo(
@@ -27,7 +27,6 @@ export const DroppableElement: FC<Props> = React.memo(
             className={s.drop__element}
             {...provided.droppableProps}
           >
-            {/* <input className={s.titleCol} defaultValue="ColName" /> */}
             {el.map((item, index) => (
               <DraggableCard
                 item={item}

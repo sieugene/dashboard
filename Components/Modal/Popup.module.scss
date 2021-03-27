@@ -1,0 +1,13 @@
+.popupFooter {
+  display: flex;
+  justify-content: space-between;
+  .deleteButton {
+    background: #cf1322;
+    color: white;
+    &:hover {
+      background: #dc6770;
+      color: white;
+      border: 1px solid transparent;
+    }
+  }
+}

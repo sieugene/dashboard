@@ -17,10 +17,7 @@ import { v4 as uuidv4 } from "uuid";
 export const useDragnItems = (children: JSX.Element[]) => {
   const dispatch = useDispatch();
   const colsRaw = useSelector((state) => state.editors.cols);
-  const dragnItems = createDragnItems(colsRaw);
-  const [state, setState] = useState<DragnItemsList[]>(
-    dragnItems || childIterator(children)
-  );
+  const [shadowState, setState] = useState<DragnItemsList[]>(colsRaw);
 
   const updateCols = (state: DragnItemsList[]) => {
     dispatch(setCols(state));
@@ -28,10 +25,13 @@ export const useDragnItems = (children: JSX.Element[]) => {
   };
   const deepUpdateCols = memoizeOne(updateCols, isDeepEqual);
   useEffect(() => {
-    deepUpdateCols(state);
-  }, [state]);
+    deepUpdateCols(shadowState);
+  }, [shadowState]);
 
-  return { state, setState };
+  return {
+    state: createDragnItems(colsRaw) || childIterator(children),
+    setState,
+  };
 };
 
 const createDragnItems = (colsRaw: DragnItemsRawList[]): DragnItemsList[] => {

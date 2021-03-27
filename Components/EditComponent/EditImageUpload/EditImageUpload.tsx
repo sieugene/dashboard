@@ -50,6 +50,7 @@ export const EditImageUpload = ({ id }) => {
         isModalVisible={isModalVisible}
         setIsModalVisible={setIsModalVisible}
         title="Text with image edit"
+        id={id}
       >
         <Editor
           editorState={editorState}

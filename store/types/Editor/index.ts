@@ -27,6 +27,12 @@ export type toggleSaveProgressType = {
   payload: boolean;
 };
 
+export const DELETE_ITEM = "DELETE_ITEM";
+export type deleteItemType = {
+  type: typeof DELETE_ITEM;
+  payload: string;
+};
+
 export type EditorTypes = "Editor" | "Video" | "Chart";
 export type EditorTypeValue = EditorState & { id: string; content: string };
 export type ChartData = {
@@ -44,4 +50,5 @@ export type editorActionsTypes =
   | setEditorsType
   | toggleLoadType
   | toggleSaveProgressType
-  | HydrateNextActionType;
+  | HydrateNextActionType
+  | deleteItemType;

@@ -26,6 +26,7 @@ export const EditText = ({ id }) => {
         isModalVisible={isModalVisible}
         setIsModalVisible={setIsModalVisible}
         title="Text edit"
+        id={id}
       >
         <Editor
           editorState={editorState}

@@ -55,6 +55,7 @@ export const EditChart: FC<Props> = ({ id }) => {
         setIsModalVisible={setIsModalVisible}
         className={style.popup}
         title="Chart edit"
+        id={id}
       >
         <Row className={style.wrapModal} justify="space-between">
           <Col xs={24} sm={24} md={10} lg={10} xl={10} className={style.col}>
