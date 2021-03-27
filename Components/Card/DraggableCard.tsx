@@ -39,12 +39,11 @@ export const DraggableCard: FC<Props> = React.memo(
           >
             <DropdownItem className={style.left}>
               <div
-                className={style.danger}
                 onClick={() => {
                   openModal(item.id);
                 }}
               >
-                edit
+                Edit
               </div>
               <div
                 className={style.danger}
@@ -52,7 +51,7 @@ export const DraggableCard: FC<Props> = React.memo(
                   deleteItem(ind, index, item.id);
                 }}
               >
-                delete item
+                Delete item
               </div>
             </DropdownItem>
             <div>{!snapshot.isDragging ? item.content : "перемещаем"}</div>

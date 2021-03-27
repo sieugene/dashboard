@@ -7,6 +7,7 @@ import { ProgressBar } from "../Components/ProgressBar/ProgressBar";
 import { Settings } from "../Components/Settings/Settings";
 import { useSelector } from "react-redux";
 import { fetchData } from "../store/reducers/EditorReducer";
+import { Loader } from "../Components/Loader/Loader";
 
 export default function Home() {
   const loading = useSelector((state) => state.editors.load);
@@ -22,8 +23,12 @@ export default function Home() {
         <title>Create Next App</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Settings />
-      <ProgressBar />
+      {!loading && (
+        <>
+          <Settings />
+          <ProgressBar />
+        </>
+      )}
       <Row
         justify="center"
         style={{
@@ -37,7 +42,7 @@ export default function Home() {
             <></>
           </DragndropMultiple>
         ) : (
-          <Spin />
+          <Loader />
         )}
       </Row>
 
