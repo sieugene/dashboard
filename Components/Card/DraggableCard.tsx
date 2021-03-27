@@ -15,13 +15,14 @@ const getItemStyle = (isDraggingOver, draggableStyle, isDragging) => {
 
 type Props = {
   deleteItem: (ind: number, index: number, id?: string) => void;
+  openModal: (id: string) => void;
   index: number;
   ind: number;
   item: DragnItem;
 };
 
 export const DraggableCard: FC<Props> = React.memo(
-  ({ item, index, ind, deleteItem }) => {
+  ({ item, index, ind, deleteItem, openModal }) => {
     return (
       <Draggable draggableId={item.id} index={index}>
         {(provided, snapshot) => (
@@ -37,7 +38,14 @@ export const DraggableCard: FC<Props> = React.memo(
             className={style.card}
           >
             <DropdownItem className={style.left}>
-              <div className={style.danger}>edit</div>
+              <div
+                className={style.danger}
+                onClick={() => {
+                  openModal(item.id);
+                }}
+              >
+                edit
+              </div>
               <div
                 className={style.danger}
                 onClick={() => {

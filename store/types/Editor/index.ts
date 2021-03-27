@@ -33,6 +33,12 @@ export type deleteItemType = {
   payload: string;
 };
 
+export const TOGGLE_OPEN_MODAL = "TOGGLE_OPEN_MODAL";
+export type toggleOpenModalType = {
+  type: typeof TOGGLE_OPEN_MODAL;
+  payload: string | null;
+};
+
 export type EditorTypes = "Editor" | "Video" | "Chart";
 export type EditorTypeValue = EditorState & { id: string; content: string };
 export type ChartData = {
@@ -51,4 +57,5 @@ export type editorActionsTypes =
   | toggleLoadType
   | toggleSaveProgressType
   | HydrateNextActionType
-  | deleteItemType;
+  | deleteItemType
+  | toggleOpenModalType;

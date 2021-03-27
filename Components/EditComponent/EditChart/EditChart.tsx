@@ -1,8 +1,9 @@
 import { EditOutlined } from "@ant-design/icons";
 import { Col, Row } from "antd";
-import React, { FC, useState } from "react";
+import React, { FC } from "react";
 import { Chart } from "react-charts";
 import { ChartData, EditorsValue } from "../../../store/types/Editor";
+import { dbclick } from "../../../Utils/dbclick";
 import { ChartInput } from "../../ChartInput/ChartInput";
 import { Popup } from "../../Modal/Popup";
 import { useEditor } from "../useEditor";
@@ -11,6 +12,8 @@ import style from "./EditChart.module.scss";
 type UseEditor = {
   editorState: EditorsValue;
   setEditorState: (content: ChartData) => void;
+  isModalVisible: boolean;
+  setIsModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 type Props = {
@@ -18,9 +21,13 @@ type Props = {
 };
 
 export const EditChart: FC<Props> = ({ id }) => {
-  const { editorState, setEditorState }: UseEditor = useEditor(id, "Chart");
+  const {
+    editorState,
+    setEditorState,
+    isModalVisible,
+    setIsModalVisible,
+  }: UseEditor = useEditor(id, "Chart");
 
-  const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
   const data = React.useMemo(() => editorState, [editorState]);
   const axes = React.useMemo(
     () => [
@@ -48,7 +55,9 @@ export const EditChart: FC<Props> = ({ id }) => {
         width: "372",
         height: "318px",
         position: "relative",
+        marginTop: "14px",
       }}
+      onClick={(event) => dbclick(event, openEdit)}
     >
       <Popup
         isModalVisible={isModalVisible}
@@ -77,9 +86,6 @@ export const EditChart: FC<Props> = ({ id }) => {
       </Popup>
       {!isModalVisible && (
         <>
-          <div className={style.edit} onClick={openEdit}>
-            <EditOutlined />
-          </div>
           <Chart
             data={data}
             axes={axes}

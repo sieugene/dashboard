@@ -15,8 +15,13 @@ import { Popup } from "../../Modal/Popup";
 import { dbclick } from "../../../Utils/dbclick";
 
 export const EditImageUpload = ({ id }) => {
-  const { editorState, setEditorState } = useEditor(id);
-  const [isModalVisible, setIsModalVisible] = useState(false);
+  const {
+    editorState,
+    setEditorState,
+    isModalVisible,
+    setIsModalVisible,
+  } = useEditor(id);
+
   const openEdit = () => {
     setIsModalVisible(true);
   };

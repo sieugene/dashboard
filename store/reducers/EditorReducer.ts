@@ -3,6 +3,7 @@ import {
   DELETE_ITEM,
   EditorsValue,
   EditorTypeValue,
+  TOGGLE_OPEN_MODAL,
 } from "./../types/Editor/index";
 import { AppState } from "./index";
 import { DragnItemsList } from "./../../Utils/countInArray";
@@ -30,6 +31,7 @@ export type EditorsState = {
   cols: null | DragnItemsList[];
   load: boolean;
   saveProgress: boolean;
+  modal: null | string;
 };
 
 const initialState: EditorsState = {
@@ -37,6 +39,7 @@ const initialState: EditorsState = {
   cols: null,
   load: true,
   saveProgress: false,
+  modal: null,
 };
 
 const staticData: ChartData = [
@@ -103,7 +106,11 @@ export const EditorReducer = (
         ...state,
         saveProgress: action.payload,
       };
-
+    case TOGGLE_OPEN_MODAL:
+      return {
+        ...state,
+        modal: action.payload,
+      };
     default:
       return state;
   }
@@ -226,4 +233,7 @@ export const getEditor = (
         return "";
     }
   }
+};
+export const modalVisible = (state: AppState, id: string): boolean => {
+  return id && state.editors.modal && state.editors.modal === id;
 };

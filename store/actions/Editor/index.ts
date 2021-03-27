@@ -4,6 +4,7 @@ import {
   Editors,
   SET_EDITORS,
   TOGGLE_LOAD,
+  TOGGLE_OPEN_MODAL,
   TOGGLE_SAVE_PROGRESS,
 } from "./../../types/Editor/index";
 
@@ -31,6 +32,13 @@ export const toggleSaveProgress = (load: boolean): editorActionsTypes => {
 export const deleteItem = (id: string): editorActionsTypes => {
   return {
     type: DELETE_ITEM,
+    payload: id,
+  };
+};
+
+export const toggleOpenModal = (id: string | null): editorActionsTypes => {
+  return {
+    type: TOGGLE_OPEN_MODAL,
     payload: id,
   };
 };

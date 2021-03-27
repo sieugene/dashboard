@@ -1,6 +1,6 @@
 /* @flow */
 
-import React, { useState } from "react";
+import React from "react";
 import dynamic from "next/dynamic";
 const Editor: React.ComponentType<any> = dynamic(
   () => import("react-draft-wysiwyg").then((mod) => mod.Editor),
@@ -14,8 +14,12 @@ import { Popup } from "../../Modal/Popup";
 import { dbclick } from "../../../Utils/dbclick";
 
 export const EditText = ({ id }) => {
-  const { editorState, setEditorState } = useEditor(id);
-  const [isModalVisible, setIsModalVisible] = useState(false);
+  const {
+    editorState,
+    setEditorState,
+    isModalVisible,
+    setIsModalVisible,
+  } = useEditor(id);
   const openEdit = () => {
     setIsModalVisible(true);
   };
