@@ -1,14 +1,45 @@
+import { service } from "./../../services/index";
+import {
+  DELETE_ITEM,
+  EditorsValue,
+  EditorTypeValue,
+  TOGGLE_OPEN_MODAL,
+} from "./../types/Editor/index";
+import { AppState } from "./index";
+import { DragnItemsList } from "./../../Utils/countInArray";
+// Actions
+import { toggleLoad, setEditors } from "../actions/Editor/index";
+// Types
+import {
+  UPDATE_EDITOR,
+  SET_EDITORS,
+  SET_COLS,
+  TOGGLE_LOAD,
+  TOGGLE_SAVE_PROGRESS,
+  editorActionsTypes,
+  ChartData,
+  EditorTypes,
+  Editors,
+} from "../types/Editor";
 import { EditorState, convertToRaw, convertFromRaw } from "draft-js";
 import { HYDRATE } from "next-redux-wrapper";
+import { ThunkAction } from "redux-thunk";
+import { AnyAction } from "redux";
 
-// Constants
-export const UPDATE_EDITOR = "UPDATE_EDITOR";
-export const SET_COLS = "SET_COLS";
-export const SET_EDITORS = "SET_EDITORS";
+export type EditorsState = {
+  editors: Editors | {};
+  cols: null | DragnItemsList[];
+  load: boolean;
+  saveProgress: boolean;
+  modal: null | string;
+};
 
-const initialState = {
+const initialState: EditorsState = {
   editors: {},
   cols: null,
+  load: true,
+  saveProgress: false,
+  modal: null,
 };
 
 const staticData: ChartData = [
@@ -34,14 +65,10 @@ const staticData: ChartData = [
   },
 ];
 
-// Types
-export type EditorTypes = "Editor" | "Video" | "Chart";
-export type ChartData = {
-  label: string;
-  data: number[][];
-}[];
-
-export const EditorReducer = (state = initialState, action) => {
+export const EditorReducer = (
+  state = initialState,
+  action: editorActionsTypes
+): EditorsState => {
   switch (action.type) {
     case HYDRATE:
       return { ...state, ...action.payload };
@@ -63,20 +90,34 @@ export const EditorReducer = (state = initialState, action) => {
         ...state,
         cols: action.payload,
       };
+    case TOGGLE_LOAD:
+      return {
+        ...state,
+        load: action.payload,
+      };
+    case DELETE_ITEM: {
+      return {
+        ...state,
+        cols: deleteItemById(state.cols, action.payload),
+      };
+    }
+    case TOGGLE_SAVE_PROGRESS:
+      return {
+        ...state,
+        saveProgress: action.payload,
+      };
+    case TOGGLE_OPEN_MODAL:
+      return {
+        ...state,
+        modal: action.payload,
+      };
     default:
       return state;
   }
 };
 
-export const setEditors = (editors) => {
-  return {
-    type: SET_EDITORS,
-    payload: editors,
-  };
-};
-
 // Helpers
-const saveContentToStore = (id: string, content) => {
+const saveContentToStore = (id: string, content: EditorState) => {
   const JSContent = {
     ...content,
     id,
@@ -84,8 +125,7 @@ const saveContentToStore = (id: string, content) => {
   };
   return JSContent;
 };
-
-export const readContentFromStore = (editor) => {
+export const readContentFromStore = (editor: EditorTypeValue) => {
   if (editor?.content) {
     const DBEditorState = convertFromRaw(JSON.parse(editor.content));
     const JsData = {
@@ -97,15 +137,30 @@ export const readContentFromStore = (editor) => {
     return EditorState.createEmpty();
   }
 };
+export const deleteItemById = (
+  cols: null | DragnItemsList[],
+  id: string
+): DragnItemsList[] | null => {
+  if (cols?.length && id) {
+    return Array.from(cols).reduce((approvedCols: DragnItemsList[], col) => {
+      const clearedCol = col.filter((col) => col.id !== id);
+      approvedCols.push(clearedCol);
+      return approvedCols;
+    }, []);
+  }
+  return cols;
+};
 // Thunks
-export const updateEditor = (id: string, value, type: EditorTypes) => (
-  dispatch
-) => {
+export const updateEditor = (
+  id: string,
+  value: EditorsValue,
+  type: EditorTypes
+) => (dispatch) => {
   switch (type) {
     case "Editor":
       dispatch({
         type: UPDATE_EDITOR,
-        payload: { id, data: saveContentToStore(id, value) },
+        payload: { id, data: saveContentToStore(id, value as EditorTypeValue) },
       });
       break;
     case "Video":
@@ -119,29 +174,53 @@ export const updateEditor = (id: string, value, type: EditorTypes) => (
   }
 };
 // Сохраняем элементы колонок и положения, для последующего сохранения и переобразования
-export const setCols = (state) => (dispatch) => {
+type SetColsThunk = ThunkAction<void, AppState, unknown, AnyAction>;
+export const setCols = (state: DragnItemsList[]): SetColsThunk => (
+  dispatch
+) => {
   const cols =
     state &&
-    Array.from(state).reduce((formattedCols: any, col: any) => {
-      const colElementsTotal = col?.reduce((colElements, el) => {
-        colElements.push({
-          element: el.element,
-          id: el.id,
-        });
-        return colElements;
-      }, []);
-      if (colElementsTotal && Array.isArray(colElementsTotal)) {
-        formattedCols.push(colElementsTotal);
-      }
-      return formattedCols;
-    }, []);
+    Array.from(state).reduce(
+      (formattedCols: DragnItemsList[], col: DragnItemsList) => {
+        const colElementsTotal = col?.reduce((colElements, el) => {
+          colElements.push({
+            element: el.element,
+            id: el.id,
+          });
+          return colElements;
+        }, []);
+        if (colElementsTotal && Array.isArray(colElementsTotal)) {
+          formattedCols.push(colElementsTotal);
+        }
+        return formattedCols;
+      },
+      []
+    );
+
   dispatch({
     type: SET_COLS,
     payload: cols,
   });
 };
+export const fetchData = () => async (dispatch) => {
+  try {
+    dispatch(toggleLoad(true));
+    const { data } = await service.allEditors();
+    if (data?.cols && data?.editors) {
+      dispatch(setCols(data.cols));
+      dispatch(setEditors(data.editors));
+    }
+  } catch (error) {
+  } finally {
+    dispatch(toggleLoad(false));
+  }
+};
 // Selector
-export const getEditor = (state, id: string, type: EditorTypes) => {
+export const getEditor = (
+  state: AppState,
+  id: string,
+  type: EditorTypes
+): EditorsValue => {
   if (state.editors?.editors) {
     switch (type) {
       case "Editor":
@@ -154,4 +233,7 @@ export const getEditor = (state, id: string, type: EditorTypes) => {
         return "";
     }
   }
+};
+export const modalVisible = (state: AppState, id: string): boolean => {
+  return id && state.editors.modal && state.editors.modal === id;
 };

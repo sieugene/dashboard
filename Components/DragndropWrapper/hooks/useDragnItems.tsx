@@ -6,24 +6,18 @@ import {
   DragnItemsRawList,
   DragnItemRaw,
   DragnItem,
-  generateItems,
 } from "../../../Utils/countInArray";
-import { EditText } from "../../EditComponent/EditText";
-import { EditImageUpload } from "../../EditComponent/EditImageUpload";
-import { EditVideo } from "../../EditComponent/EditVideo/EditVideo";
-import { EditChart } from "../../EditComponent/EditChart/EditChart";
 import { setCols } from "../../../store/reducers/EditorReducer";
 import { useDispatch } from "react-redux";
 import memoizeOne from "memoize-one";
 import isDeepEqual from "lodash.isequal";
+import { ElementCreator } from "./../../ElementCreator/ElementCreator";
+import { v4 as uuidv4 } from "uuid";
 
 export const useDragnItems = (children: JSX.Element[]) => {
   const dispatch = useDispatch();
   const colsRaw = useSelector((state) => state.editors.cols);
-  const dragnItams = createDragnItems(colsRaw);
-  const [state, setState] = useState<DragnItemsList[]>(
-    dragnItams || childIterator(children)
-  );
+  const [shadowState, setState] = useState<DragnItemsList[]>(colsRaw);
 
   const updateCols = (state: DragnItemsList[]) => {
     dispatch(setCols(state));
@@ -31,10 +25,13 @@ export const useDragnItems = (children: JSX.Element[]) => {
   };
   const deepUpdateCols = memoizeOne(updateCols, isDeepEqual);
   useEffect(() => {
-    deepUpdateCols(state);
-  }, [state]);
+    deepUpdateCols(shadowState);
+  }, [shadowState]);
 
-  return { state, setState };
+  return {
+    state: createDragnItems(colsRaw) || childIterator(children),
+    setState,
+  };
 };
 
 const createDragnItems = (colsRaw: DragnItemsRawList[]): DragnItemsList[] => {
@@ -54,31 +51,14 @@ const createDragnItems = (colsRaw: DragnItemsRawList[]): DragnItemsList[] => {
   }
 };
 const createElement = (el: DragnItemRaw): DragnItem => {
-  const id = el.id ?? "";
-  const elements = {
-    EditText: {
-      content: <EditText id={id} />,
-    },
-    EditImageUpload: {
-      content: <EditImageUpload id={id} />,
-    },
-    ADD_LAYOUT: {
-      extend: generateItems(1),
-    },
-    EditVideo: {
-      content: <EditVideo id={id} />,
-    },
-    EditChart: {
-      content: <EditChart id={id} />,
-    },
-  };
+  const id = el.id ?? uuidv4();
   if (el.element?.type) {
-    const condition = elements[el.element.type];
+    const create = ElementCreator(el.element.type, id);
     return {
       ...el,
-      content: condition
-        ? elements[el.element.type].content
-        : React.createElement(el.element.type, [el.element.props]),
+      content: create
+        ? create.content
+        : React.createElement(el.element.type, { key: id }),
     };
   }
 };

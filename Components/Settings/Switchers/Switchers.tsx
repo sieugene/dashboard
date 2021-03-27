@@ -1,15 +1,13 @@
 import { Switch } from "antd";
 import React, { FC } from "react";
 import { useDispatch } from "react-redux";
-import {
-  fieldToggle,
-  updateToggle,
-} from "../../../store/reducers/SettingsReducer";
+import { updateToggle } from "../../../store/actions/Settings";
+import { fieldToggle } from "../../../store/reducers/SettingsReducer";
 import style from "./Switchers.module.scss";
 import { useSwitchers } from "./useSwitchers";
 
 export const Switchers: FC = () => {
-  const { autoSave, progressBar, localstorage } = useSwitchers();
+  const { autoSave, progressBar, localstorage, load } = useSwitchers();
 
   const dispatch = useDispatch();
   function onChange(checked: Boolean, field: fieldToggle) {
@@ -21,7 +19,7 @@ export const Switchers: FC = () => {
         <Switch
           checked={autoSave}
           onChange={(checked) => onChange(checked, "autoSave")}
-          disabled={localstorage}
+          disabled={localstorage || load}
         />
         Auto save
       </div>
@@ -29,17 +27,17 @@ export const Switchers: FC = () => {
         <Switch
           checked={progressBar}
           onChange={(checked) => onChange(checked, "progressBar")}
-          disabled={localstorage}
+          disabled={localstorage || load}
         />
         Progress bar
       </div>
-      <div className={style.swticher}>
+      {/* <div className={style.swticher}>
         <Switch
           checked={localstorage}
           onChange={(checked) => onChange(checked, "localstorage")}
         />
         Use localstorage
-      </div>
+      </div> */}
     </>
   );
 };

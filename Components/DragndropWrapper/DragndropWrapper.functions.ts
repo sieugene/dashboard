@@ -55,7 +55,8 @@ export const onDragEndHandler = (
       result,
       sourceId,
       newLocationId,
-      source
+      source,
+      destination
     );
     setState(newState.filter((group) => group.length));
   }
@@ -73,14 +74,23 @@ const sortingСolumn = (
   return newState;
 };
 //Перемещение между колонками
-const movingBetween = (state, result, sourceId, newLocationId, source) => {
+const movingBetween = (
+  state,
+  result,
+  sourceId,
+  newLocationId,
+  source,
+  destination
+) => {
   const newState = [...state];
   // If create new move element, get by type in the result
   if (!sourceId && sourceId !== 0) {
-    newState[newLocationId] = [
-      ...newState[newLocationId],
-      ...result[source.droppableId],
-    ];
+    newState[newLocationId] = [...newState[newLocationId]];
+    newState[newLocationId].splice(
+      destination.index,
+      0,
+      result[source.droppableId][0]
+    );
   } else {
     newState[sourceId] = result[sourceId];
     newState[newLocationId] = result[newLocationId];

@@ -1,8 +1,7 @@
 import React, { FC, useState } from "react";
-import { ChartData } from "../EditComponent/EditChart/EditChart";
 import JSONInput from "react-json-editor-ajrm";
 import locale from "react-json-editor-ajrm/locale/en";
-import style from "./ChartInput.module.scss";
+import { ChartData } from "../../store/types/Editor";
 
 type Props = {
   value: ChartData;

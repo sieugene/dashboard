@@ -9,7 +9,9 @@ class Editor {
         if (err) {
           reject(err);
         } else {
-          resolve(data);
+          setTimeout(() => {
+            resolve(data);
+          }, 1500);
         }
       });
     });
@@ -21,7 +23,9 @@ class Editor {
         if (err) {
           reject(err);
         }
-        resolve(JSON.parse(data));
+        setTimeout(() => {
+          resolve(JSON.parse(data));
+        }, 3000);
       });
     });
   }

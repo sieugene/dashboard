@@ -1,4 +1,21 @@
 .card {
   user-select: none;
   overflow: hidden;
+  position: relative;
+  &:hover {
+    .left {
+      opacity: 1;
+    }
+  }
+}
+.left {
+  position: absolute;
+  right: 5px;
+  font-size: 26px;
+  top: 0;
+  opacity: 0;
+  transition: 0.6s all ease;
+}
+.danger{
+  color: rgb(196, 6, 6)
 }

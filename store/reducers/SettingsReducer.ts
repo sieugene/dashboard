@@ -1,8 +1,11 @@
+import { AnyAction } from "redux";
+import { AppState } from "./index";
+import { SettingsActionsTypes, UPDATE_TOGGLE } from "./../types/Settings/index";
+import { toggleSaveProgress } from "./../actions/Editor/index";
 import { service } from "./../../services/index";
 import throttle from "lodash.throttle";
 import { HYDRATE } from "next-redux-wrapper";
-
-export const UPDATE_TOGGLE = "UPDATE_TOGGLE";
+import { ThunkAction } from "redux-thunk";
 
 const initialState = {
   autoSave: true,
@@ -10,9 +13,14 @@ const initialState = {
   localstorage: false,
 };
 
+export type SettingsState = typeof initialState;
+
 export type fieldToggle = "autoSave" | "progressBar" | "localstorage";
 
-export const SettingsReducer = (state = initialState, action) => {
+export const SettingsReducer = (
+  state = initialState,
+  action: SettingsActionsTypes
+): SettingsState => {
   switch (action.type) {
     case HYDRATE:
       return { ...state, ...action.payload };
@@ -26,30 +34,41 @@ export const SettingsReducer = (state = initialState, action) => {
   }
 };
 
-export const updateToggle = (field: fieldToggle, toggle: Boolean) => {
-  return {
-    type: UPDATE_TOGGLE,
-    payload: { field, toggle },
-  };
+type SaveThunk = ThunkAction<void, AppState, unknown, AnyAction>;
+export const save = (): SaveThunk => async (dispatch, getState) => {
+  if (process.env.NODE_ENV === "development") {
+    try {
+      dispatch(toggleSaveProgress(true));
+      const state = {
+        cols: getState().editors.cols,
+        editors: getState().editors.editors,
+      };
+      await service.editorsUpdate(state);
+    } catch (error) {
+    } finally {
+      dispatch(toggleSaveProgress(false));
+    }
+  } else {
+    dispatch(toggleSaveProgress(true));
+    setTimeout(() => {
+      dispatch(toggleSaveProgress(false));
+    }, 1500);
+  }
 };
 
 export const autoSave = () => (dispatch, getState) => {
-  const THROTTLE_INTERVAL = 5000; // <= adjust this number to see throttling in action
-  const INVOCATION_INTERVAL = 5000; // 0.1 sec
-
-  // regular fn
-  const punchClock = function punchClock() {
-    const state = getState().editors;
-    service.editorsUpdate(state).then((data) => {
-      console.log("WAS UPDATED");
-    });
+  const THROTTLE_TIMEOUT = 5000; // <= adjust this number to see throttling in action
+  const INVOCATION_TIMEOUT = 5000;
+  const doSave = async () => {
+    const autoSave = getState().settings.autoSave;
+    if (autoSave) {
+      await dispatch(save());
+    }
   };
 
-  // wrap it and supply interval representing minimum delay between invocations
-  const throttledPunchClock = throttle(punchClock, THROTTLE_INTERVAL);
+  const throttledPunchClock = throttle(doSave, THROTTLE_TIMEOUT);
 
-  // set up looping
-  const intervalId = setTimeout(throttledPunchClock, INVOCATION_INTERVAL);
+  const intervalId = setTimeout(throttledPunchClock, INVOCATION_TIMEOUT);
 
   return intervalId;
 };

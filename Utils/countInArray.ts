@@ -12,14 +12,14 @@ export type DragnItem = {
   content: React.ReactNode;
   element: {
     type: string;
-    props: any;
+    props: unknown;
   };
 };
 export type DragnItemRaw = {
   id: string;
   element: {
     type: string;
-    props: any;
+    props: unknown;
   };
 };
 export type DragnItemsRawList = DragnItemRaw[];
@@ -29,11 +29,17 @@ export const generateItems = (
   offset: number = 0,
   childrens?: React.ReactNode[] & any
 ): DragnItemsList => {
+  const id = !!childrens?.props?.id ? childrens.props.id : uuidv4();
+  const type =
+    childrens?.props?.type ||
+    (childrens?.type?.name ?? childrens?.type) ||
+    undefined;
+
   return Array.from({ length: count }, (v, k) => k).map((k) => ({
-    id: uuidv4(),
+    id,
     content: (childrens && childrens[k]) ?? (childrens || ""),
     element: {
-      type: childrens && (childrens.type?.name ?? childrens.type),
+      type,
       props: childrens && childrens.props,
     },
   }));

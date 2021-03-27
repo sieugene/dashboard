@@ -6,11 +6,14 @@ import s from "./index.module.scss";
 import { onDragEndHandler } from "./DragndropWrapper.functions";
 import { useCreateMoveElement } from "../../hooks/useCreateMoveElement";
 import { useDragnItems } from "./hooks/useDragnItems";
+import { useDispatch } from "react-redux";
+import { deleteItem, toggleOpenModal } from "../../store/actions/Editor";
 type Props = {
   children: JSX.Element[];
 };
 
 export const DragndropMultiple: FC<Props> = React.memo(({ children }) => {
+  const dispatch = useDispatch();
   const { state, setState } = useDragnItems(children);
   const createMoveElement = useCreateMoveElement(setState, state);
 
@@ -18,12 +21,20 @@ export const DragndropMultiple: FC<Props> = React.memo(({ children }) => {
     onDragEndHandler(result, state, setState, createMoveElement);
   }
 
-  const deleteItem = (ind: number, index: number) => {
-    const newState = [...state];
-    newState[ind].splice(index, 1);
-    setState(newState.filter((group) => group.length));
+  const deleteItemCol = (ind: number, index: number, id?: string) => {
+    if (id) {
+      dispatch(deleteItem(id));
+    } else {
+      const newState = [...state];
+      newState[ind].splice(index, 1);
+      setState(newState.filter((group) => group.length));
+    }
   };
-
+  const openModal = (id: string) => {
+    if (id) {
+      dispatch(toggleOpenModal(id));
+    }
+  };
   return (
     <div className={s.drag__wrap}>
       <DragDropContext onDragEnd={onDragEnd}>
@@ -32,7 +43,8 @@ export const DragndropMultiple: FC<Props> = React.memo(({ children }) => {
             ind={ind}
             el={el}
             key={ind}
-            deleteItem={deleteItem}
+            deleteItem={deleteItemCol}
+            openModal={openModal}
           />
         ))}
         <Panel />

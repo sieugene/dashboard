@@ -3,8 +3,11 @@ import { Drawer, Button } from "antd";
 import { useDispatch } from "react-redux";
 import style from "./Settings.module.scss";
 import { Switchers } from "./Switchers/Switchers";
+import { useSelector } from "react-redux";
+import { forceSaveAction } from "../../store/actions/Settings";
 
 export const Settings: React.FC = () => {
+  const saveProgress = useSelector((state) => state.editors.saveProgress);
   const dispatch = useDispatch();
   const [visible, setVisible] = useState(false);
   const showDrawer = () => {
@@ -12,6 +15,9 @@ export const Settings: React.FC = () => {
   };
   const onClose = () => {
     setVisible(false);
+  };
+  const forceSave = () => {
+    dispatch(forceSaveAction());
   };
   return (
     <>
@@ -26,7 +32,9 @@ export const Settings: React.FC = () => {
         visible={visible}
       >
         <Switchers />
-        <Button>Force Save</Button>
+        <Button disabled={saveProgress} onClick={forceSave}>
+          Force Save
+        </Button>
       </Drawer>
     </>
   );

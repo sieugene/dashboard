@@ -1,0 +1,48 @@
+.guide {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  .title {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 10px;
+    margin-top: 10px;
+    span {
+      font-size: 18px;
+      margin-right: 6px;
+      color: black;
+    }
+    h2 {
+      font-size: 24px;
+      font-weight: 400;
+      margin: 0;
+      padding: 0;
+      color: #1890ff;
+    }
+  }
+  .code {
+    background: black;
+    color: white;
+    width: 100%;
+    padding: 8px;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+  }
+  .link {
+    margin-left: 5px;
+  }
+  .content {
+    max-width: 500px;
+  }
+  ul {
+    max-width: 500px;
+    li {
+      color: #595757;
+      &:hover {
+        color: black;
+      }
+    }
+  }
+}
