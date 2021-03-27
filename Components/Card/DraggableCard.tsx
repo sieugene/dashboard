@@ -54,7 +54,7 @@ export const DraggableCard: FC<Props> = React.memo(
                 Delete item
               </div>
             </DropdownItem>
-            <div>{!snapshot.isDragging ? item.content : "перемещаем"}</div>
+            <div>{!snapshot.isDragging ? item.content : ""}</div>
           </div>
         )}
       </Draggable>
