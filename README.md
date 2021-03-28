@@ -2,19 +2,17 @@
 
 Dashboard with dragndrop elements, includes text, image, video, charts.
 
-## Features (v0.1.1)
+## Features (v1.0)
 
 - Separate panel with elements.
-- Saves the position of the columns and the contents of the elements.
-- Drag'n'drop elements of images, videos, charts.
+- Saves the position of the columns and the contents of the elements.(only on local startup)
+- Drag and drop elements of images, videos, charts.
+- Delete items and edit them.
+- Settings for automatic saving, display of progress.
+- Guide page.
 
 If you have any ideas about expanding the functionality or tips for improving it, write to me. Visit my website to 
 [contact me](https://sieugene.vercel.app/)
-
-> At the moment, there is a raw version of dashboard, 
-> in the future it is planned to expand the functionality 
-> in your free time. There are bugs in the application, performance problems.
-> Further updates will fix the problem with saving data and expand the features with the settings panel.
 
 ## Tools
 This is a full stack application that includes. (The backend part is done using the next api)
@@ -25,9 +23,15 @@ This is a full stack application that includes. (The backend part is done using 
 | Draft js 
 | react-beautiful-dnd 
 | react-charts
+| multer
+| Redux
+| Redux-thunk
+| more in package.json
 ## Screenshots
 ![Preview dashboard](https://github.com/sieugene/dashboard/blob/master/public/gh/1.jpg?raw=true)
 ![Preview dashboard2](https://github.com/sieugene/dashboard/blob/master/public/gh/2.jpg?raw=true)
+![Preview dashboard3](https://github.com/sieugene/dashboard/blob/master/public/gh/3.jpg?raw=true)
+
 
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
