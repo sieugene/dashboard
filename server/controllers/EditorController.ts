@@ -1,7 +1,7 @@
 const fs = require("fs");
-// const path = require("path");
+const path = require("path");
 
-const filePath = "public/data/editor.json";
+const filePath = path.join(process.env.ROOT, "public", "data", "editor.json");
 class Editor {
   save(editors) {
     return new Promise((resolve, reject) => {
