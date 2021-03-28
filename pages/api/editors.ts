@@ -1,4 +1,5 @@
 import { EditorController } from "../../server/controllers/EditorController";
+import staticJson from "../../data/editor.json";
 
 export default async (req, res) => {
   if (req.method === "POST") {
@@ -14,7 +15,7 @@ export default async (req, res) => {
       const result = await EditorController.getAll();
       res.status(200).json(result);
     } catch (error) {
-      res.status(400).json({ error });
+      res.status(400).json({ data: staticJson, err: error });
     }
   }
 };

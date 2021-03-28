@@ -1,7 +1,10 @@
 const fs = require("fs");
 const path = require("path");
 
-const filePath = path.join(process.env.ROOT, "public", "data", "editor.json");
+const isProd = process.env.NODE_ENV !== "development";
+const filePath = !isProd
+  ? path.join(process.env.ROOT, "data", "editor.json")
+  : path.join("data", "editor.json");
 class Editor {
   save(editors) {
     return new Promise((resolve, reject) => {
@@ -20,7 +23,9 @@ class Editor {
     return new Promise((resolve, reject) => {
       fs.readFile(filePath, function (err, data) {
         if (err) {
-          reject(err);
+          setTimeout(() => {
+            reject(err);
+          }, 1500);
         } else {
           setTimeout(() => {
             resolve(JSON.parse(data));

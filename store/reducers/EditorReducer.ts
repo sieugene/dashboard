@@ -210,7 +210,12 @@ export const fetchData = () => async (dispatch) => {
       dispatch(setCols(data.cols));
       dispatch(setEditors(data.editors));
     }
-  } catch (error) {
+  } catch (err) {
+    const response = err.response?.data;
+    if (response?.data?.cols && response?.data?.editors) {
+      dispatch(setCols(response.data.cols));
+      dispatch(setEditors(response.data.editors));
+    }
   } finally {
     dispatch(toggleLoad(false));
   }
